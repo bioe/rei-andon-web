@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -39,8 +41,11 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::prefix('users')->name('users.')->group(function () {
         //Do Something later
         Route::patch('menu/{id}', [UserController::class, 'patchMenu'])->name('menu.update');
+        Route::patch('group/{id}', [UserController::class, 'patchGroup'])->name('group.update');
     });
     Route::resource('users', UserController::class);
+    Route::resource('statuses', StatusController::class);
+    Route::resource('groups', GroupController::class);
 });
 
 require __DIR__ . '/auth.php';

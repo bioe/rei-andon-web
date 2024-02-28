@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserUpdateRequest;
+use App\Models\Group;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -63,14 +64,18 @@ class UserController extends Controller
         if (null == $id) {
             $data = new User;
         } else {
-            $data = User::find($id);
+            $data = User::with('groups')->find($id)->append('group_ids');
         }
+
         $menu_list = config('menus.items');
+        $group_options = treeselect_options(Group::where('active', true)->get());
+
 
         return Inertia::render('User/Edit', [
             'data' => $data,
             'useUsername' => env(LOGIN_USERNAME, false),
             'menu_list' => $menu_list,
+            'group_options' => $group_options,
         ]);
     }
 
@@ -113,5 +118,17 @@ class UserController extends Controller
         $data->menu_permission = $request->menus;
         $data->save();
         return Redirect::route('users.edit', $data->id)->with('message', 'Menu Permission Updated');
+    }
+
+    /**
+     * Save Group
+     */
+
+    public function patchGroup(Request $request, $id)
+    {
+        $data = User::find($id);
+        $data->groups()->detach();
+        $data->groups()->attach($request->groups);
+        return Redirect::route('users.edit', $data->id)->with('message', 'Group Updated');
     }
 }

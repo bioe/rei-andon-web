@@ -21,13 +21,12 @@ return [
                     'route' => 'users.index'
                 ],
                 [
-                    'title' => 'Profile',
-                    'submenus' => [
-                        [
-                            'title' => 'Edit Profile',
-                            'route' => 'profile.edit'
-                        ]
-                    ]
+                    'title' => 'Status',
+                    'route' => 'statuses.index'
+                ],
+                [
+                    'title' => 'Groups',
+                    'route' => 'groups.index'
                 ],
             ]
 

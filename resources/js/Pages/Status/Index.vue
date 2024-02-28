@@ -18,13 +18,10 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
-    useUsername: {
-        type: Boolean
-    }
 });
 
-const routeGroupName = 'users';
-const headerTitle = ref('Users');
+const routeGroupName = 'statuses';
+const headerTitle = ref('Status');
 const form = useForm(props.filters);
 
 const sort = (field) => {
@@ -40,7 +37,7 @@ const submit = () => {
 };
 
 const destroy = (id, name) => {
-    const c = confirm(`Delete this user ${name} ?`);
+    const c = confirm(`Delete this status ${name} ?`);
     if (c) {
         router.delete(route(routeGroupName + '.destroy', id));
     }
@@ -96,14 +93,13 @@ const destroy = (id, name) => {
                             <Link :href="route(routeGroupName + '.edit', item.id)" class="btn btn-sm btn-link">
                             <i class="bi bi-pencil"></i>
                             </Link>
-                            <button v-if="item.id != $page.props.auth.user.id" @click="destroy(item.id, item.name)"
-                                class="btn btn-sm btn-link">
+                            <button @click="destroy(item.id, item.name)" class="btn btn-sm btn-link">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </td>
-                        <td v-if="useUsername">{{ item.username }}</td>
+                        <td>{{ item.code }}</td>
                         <td>{{ item.name }}</td>
-                        <td>{{ item.email }}</td>
+                        <td>{{ item.state }}</td>
                         <td>{{ formatDate(item.created_at) }}</td>
                     </tr>
                 </tbody>

@@ -18,13 +18,10 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
-    useUsername: {
-        type: Boolean
-    }
 });
 
-const routeGroupName = 'users';
-const headerTitle = ref('Users');
+const routeGroupName = 'groups';
+const headerTitle = ref('Group');
 const form = useForm(props.filters);
 
 const sort = (field) => {
@@ -40,7 +37,7 @@ const submit = () => {
 };
 
 const destroy = (id, name) => {
-    const c = confirm(`Delete this user ${name} ?`);
+    const c = confirm(`Delete this group ${name} ?`);
     if (c) {
         router.delete(route(routeGroupName + '.destroy', id));
     }
@@ -101,9 +98,9 @@ const destroy = (id, name) => {
                                 <i class="bi bi-trash"></i>
                             </button>
                         </td>
-                        <td v-if="useUsername">{{ item.username }}</td>
                         <td>{{ item.name }}</td>
-                        <td>{{ item.email }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.machines_label }}</td>
                         <td>{{ formatDate(item.created_at) }}</td>
                     </tr>
                 </tbody>

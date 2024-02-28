@@ -5,6 +5,7 @@ import DetailForm from './Partials/DetailForm.vue';
 import { Head, router, useForm, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import MenuForm from './Partials/MenuForm.vue';
+import GroupForm from './Partials/GroupForm.vue';
 
 const props = defineProps({
     data: {
@@ -15,6 +16,9 @@ const props = defineProps({
         type: Boolean
     },
     menu_list: {
+        type: Array,
+    },
+    group_options: {
         type: Array,
     },
 });
@@ -39,6 +43,9 @@ const headerTitle = ref('User');
                     <li v-if="data.id" class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#tab_2">Menus</a>
                     </li>
+                    <li v-if="data.id" class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#tab_3">Groups</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body">
@@ -48,6 +55,9 @@ const headerTitle = ref('User');
                     </div>
                     <div v-if="data.id" class="tab-pane fade pt-10" id="tab_2" role="tabpanel" aria-labelledby="tab_2">
                         <MenuForm v-bind:="$props" />
+                    </div>
+                    <div v-if="data.id" class="tab-pane fade pt-10" id="tab_3" role="tabpanel" aria-labelledby="tab_3">
+                        <GroupForm v-bind:="$props" />
                     </div>
                 </div>
             </div>

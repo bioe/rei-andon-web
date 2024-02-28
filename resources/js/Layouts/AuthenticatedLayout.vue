@@ -86,7 +86,7 @@ onMounted(() => {
     <nav class="navbar navbar-expand-lg fixed-top bg-dark" data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <ApplicationLogo class="app-logo" width="50" height="50" /> Brand
+                <ApplicationLogo class="app-logo" width="50" height="50" /> Andon
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" id="navbarSideCollapse"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

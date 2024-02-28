@@ -9,10 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\AuthModal as Authenticatable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable //implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+
 
     /**
      * The attributes that are mass assignable.
@@ -56,7 +58,7 @@ class User extends Authenticatable //implements MustVerifyEmail
         'menu_flags'
     ];
 
-    public function active(): Attribute
+    protected function active(): Attribute
     {
         return Attribute::make(
             get: fn (string $value) => $value ? true : false
@@ -88,6 +90,25 @@ class User extends Authenticatable //implements MustVerifyEmail
             get: fn (mixed $value, array $attributes) => $this->set_menu_flag()
         );
     }
+
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class, 'group_user', 'user_id', 'group_id');
+    }
+
+    protected function groupIds(): Attribute
+    {
+        return Attribute::make(
+            get: function (mixed $value, array $attributes) {
+                $ids = [];
+                foreach ($this->groups as $group) {
+                    $ids[] = $group->id;
+                }
+                return $ids;
+            }
+        );
+    }
+
 
     //Static Functions Below Here
 
