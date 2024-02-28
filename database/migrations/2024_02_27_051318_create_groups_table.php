@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('machine_list')->nullable();
             $table->boolean('active')->default(false);
-            $table->unsignedBigInteger('last_edit_user_id')->nullable()->unsigned();
+            $table->unsignedBigInteger('last_edit_user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

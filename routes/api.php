@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\ReiController;
+use App\Http\Controllers\Api\WatchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('rei')->name('api.rei.')->group(function () {
+    Route::get('statuses', [ReiController::class, 'getStatuses'])->name('statuses');
+    Route::get('status', [ReiController::class, 'getStatus'])->name('status');
+    Route::post('status', [ReiController::class, 'postStatus'])->name('status');
+    Route::post('resolve', [ReiController::class, 'postResolve'])->name('resolve');
+});
+
+
+Route::prefix('watch')->name('api.watch.')->group(function () {
+    Route::post('response', [WatchController::class, 'postResponse'])->name('response');
 });
