@@ -89,3 +89,15 @@ body.auth {
 .table-hover th:hover {
     background-color: #f9fafb;
 }
+
+.watch-column {
+    /* This should match the width to create a square */
+    background-color: #172b4d;
+    /* Change the background color to your preference */
+    align-items: center;
+    color: #ffffff;
+    /* Change the text color to your preference */
+    font-weight: bold;
+    /* Optionally, set the font weight */
+    font-size: 2rem;
+}

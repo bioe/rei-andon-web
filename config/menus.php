@@ -28,6 +28,10 @@ return [
                     'title' => 'Groups',
                     'route' => 'groups.index'
                 ],
+                [
+                    'title' => 'Watches',
+                    'route' => 'watches.index'
+                ],
             ]
 
         ]

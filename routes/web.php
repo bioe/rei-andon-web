@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WatchController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,9 +31,7 @@ Route::get('/', function () {
     // ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth', 'admin')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -46,6 +46,7 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('statuses', StatusController::class);
     Route::resource('groups', GroupController::class);
+    Route::resource('watches', WatchController::class);
 });
 
 require __DIR__ . '/auth.php';

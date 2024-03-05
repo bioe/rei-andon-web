@@ -20,7 +20,7 @@ class ReiController extends ApiController
 
     public function getStatuses()
     {
-        return Status::select(['id', 'code', 'state', 'button_1', 'button_2'])->where('active', true)->get();
+        return Status::select(['id', 'code', 'name', 'state', 'button_1', 'button_2'])->where('active', true)->get();
     }
 
     public function getStatus(GetStatusRequest $request)
