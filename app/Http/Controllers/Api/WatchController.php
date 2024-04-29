@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\Api\GetStatusRequest;
+use App\Http\Requests\Api\GetLatestRequest;
+use App\Http\Requests\Api\PostLoginRequest;
 use App\Http\Requests\Api\PostResolveRequest;
 use App\Http\Requests\Api\PostResponseRequest;
 use App\Http\Requests\Api\PostStatusRequest;
@@ -17,12 +18,30 @@ use Illuminate\Http\Request;
 
 class WatchController extends ApiController
 {
-    public function getStatus(GetStatusRequest $request)
+    public function postLogin(PostLoginRequest $request)
+    {
+        $data = $request->validated();
+        $record = User::where('username', $data['employee_code'])->where('user_type', OPERATOR)->first(['id', 'username']);
+        if ($record == null) return response()->json(['message' => 'Employee not found'], 400);
+
+        return response()->json($record->makeHidden(['menu_flags']));
+    }
+
+    /**
+     * Return the selected record 
+     */
+    public function getLatestMachineRecord(GetLatestRequest $request)
     {
         $data = $request->validated();
         $record = StatusRecord::with(['status', 'responses'])->ofMachine($data)
             ->orderBy('created_at', 'desc')->first();
 
+        return response()->json($record);
+    }
+
+    public function getRecord($id)
+    {
+        $record = StatusRecord::with(['status', 'responses'])->find($id);
         return response()->json($record);
     }
 

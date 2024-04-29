@@ -55,7 +55,7 @@ class User extends Authenticatable //implements MustVerifyEmail
     ];
 
     protected $appends = [
-        'menu_flags'
+        'menu_flags', 'employee_code'
     ];
 
     protected function active(): Attribute
@@ -73,6 +73,13 @@ class User extends Authenticatable //implements MustVerifyEmail
             );
         }
         return Attribute::make();
+    }
+
+    protected function employeeCode(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => $attributes['username']
+        );
     }
 
     //Use for User/MenuForm

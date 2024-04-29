@@ -4,9 +4,11 @@ namespace Database\Seeders;
 
 use App\Models\Status;
 use App\Models\StatusRecord;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class TestSeeder extends Seeder
 {
@@ -15,6 +17,15 @@ class TestSeeder extends Seeder
      */
     public function run(): void
     {
+        User::create([
+            'name' => "Operator1",
+            'email' => "operator@mail.com",
+            'username' => "0000", //Also employee code
+            'password' => Hash::make('12345678'),
+            'user_type' => OPERATOR,
+            'active' => true
+        ]);
+
         for ($i = 1; $i <= 8; $i++) {
             $state = "warning";
             $name = "Require Assist";
