@@ -26,7 +26,9 @@ class User extends Authenticatable //implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'active'
+        'active',
+        'user_type',
+        'shift'
     ];
 
     /**
@@ -52,10 +54,12 @@ class User extends Authenticatable //implements MustVerifyEmail
     //Default attributes
     protected $attributes = [
         'active' => true,
+        'user_type' => OPERATOR,
+        'shift' => null,
     ];
 
     protected $appends = [
-        'menu_flags', 'employee_code'
+        'menu_flags', 'employee_code', 'logout_time'
     ];
 
     protected function active(): Attribute
@@ -78,7 +82,14 @@ class User extends Authenticatable //implements MustVerifyEmail
     protected function employeeCode(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => $attributes['username']
+            get: fn (mixed $value, array $attributes) => isset($attributes['username']) ? $attributes['username'] : ''
+        );
+    }
+
+    protected function logoutTime(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => isset($attributes['shift']) && $attributes['shift'] == NIGHT ? "07:00" : "19:00"
         );
     }
 
@@ -184,5 +195,15 @@ class User extends Authenticatable //implements MustVerifyEmail
             }
         }
         return $data;
+    }
+
+    public static function user_type_options()
+    {
+        return [ADMIN, OPERATOR];
+    }
+
+    public static function shift_options()
+    {
+        return [MORNING, NIGHT];
     }
 }

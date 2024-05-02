@@ -76,6 +76,8 @@ class UserController extends Controller
             'useUsername' => env(LOGIN_USERNAME, false),
             'menu_list' => $menu_list,
             'group_options' => $group_options,
+            'shift_options' => User::shift_options(),
+            'user_type_options' => User::user_type_options(),
         ]);
     }
 

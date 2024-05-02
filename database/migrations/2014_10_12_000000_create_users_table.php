@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('menus')->nullable();
             $table->string('segment_code')->nullable();
             $table->string('user_type')->nullable();
+            $table->string('shift')->nullable(); //morning shift or night shift, logout at specific time
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

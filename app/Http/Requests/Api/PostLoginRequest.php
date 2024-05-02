@@ -17,6 +17,7 @@ class PostLoginRequest extends FormRequest
         $rules = [];
         return  array_merge($rules, [
             'employee_code' => ['string', 'max:255', 'required'],
+            'watch_code' => ['string', 'max:255', 'required'],
         ]);
     }
 }

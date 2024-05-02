@@ -28,7 +28,8 @@ class StatusRecord extends BaseModel
         'resolved_at',
         'resolve_duration_second', //When machine turn back to GREEN
         'active',
-        'origin'
+        'origin',
+        'group_id' //Only employee with same group allow to view this record
     ];
 
     //Default attributes

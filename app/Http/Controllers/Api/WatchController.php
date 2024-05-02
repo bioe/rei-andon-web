@@ -11,6 +11,7 @@ use App\Models\ResponseRecord;
 use App\Models\Status;
 use App\Models\StatusRecord;
 use App\Models\User;
+use App\Models\Watch;
 use Carbon\Carbon;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
@@ -21,14 +22,21 @@ class WatchController extends ApiController
     public function postLogin(PostLoginRequest $request)
     {
         $data = $request->validated();
-        $record = User::where('username', $data['employee_code'])->where('user_type', OPERATOR)->first(['id', 'username']);
-        if ($record == null) return response()->json(['message' => 'Employee not found'], 400);
+        $user = User::where('username', $data['employee_code'])->where('user_type', OPERATOR)->first(['id', 'username', 'shift']);
+        if ($user == null) return response()->json(['message' => 'Employee not found'], 400);
 
-        return response()->json($record->makeHidden(['menu_flags']));
+        $watch = Watch::where('code', $data['watch_code'])->first();
+        if ($watch) {
+            $watch->login_user_id = $user->id;
+            $watch->login_at = Carbon::now();
+            $watch->save();
+        }
+
+        return response()->json($user->append('group_ids')->makeHidden(['menu_flags', 'groups']));
     }
 
     /**
-     * Return the selected record 
+     * Return the latest record 
      */
     public function getLatestMachineRecord(GetLatestRequest $request)
     {
@@ -39,6 +47,9 @@ class WatchController extends ApiController
         return response()->json($record);
     }
 
+    /**
+     * Return the selected record 
+     */
     public function getRecord($id)
     {
         $record = StatusRecord::with(['status', 'responses'])->find($id);

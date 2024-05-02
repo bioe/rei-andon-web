@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\GetLatestRequest;
-use App\Http\Requests\Api\PostResolveRequest;
-use App\Http\Requests\Api\PostResponseRequest;
+use App\Http\Requests\Api\PostCodeRequest;
 use App\Http\Requests\Api\PostStatusRequest;
 use App\Models\ResponseRecord;
 use App\Models\Status;
@@ -55,7 +54,7 @@ class ReiController extends ApiController
     /**
      * When operator infront of the machine and press "LOCAL" button
      */
-    public function postAttend(PostResolveRequest $request)
+    public function postLatestAttend(PostCodeRequest $request)
     {
         $data = $request->validated();
 
@@ -73,7 +72,7 @@ class ReiController extends ApiController
     /**
      * When Towerlight turn back to Green, call postResolve
      */
-    public function postResolve(PostResolveRequest $request)
+    public function postLatestResolve(PostCodeRequest $request)
     {
         $data = $request->validated();
 

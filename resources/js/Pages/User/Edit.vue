@@ -21,12 +21,19 @@ const props = defineProps({
     group_options: {
         type: Array,
     },
+    user_type_options: {
+        type: Array,
+    },
+    shift_options: {
+        type: Array,
+    },
 });
 const routeGroupName = 'users';
 const headerTitle = ref('User');
 </script>
 
 <template>
+
     <Head :title="headerTitle" />
 
     <AuthenticatedLayout>

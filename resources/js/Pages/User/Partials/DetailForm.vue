@@ -14,7 +14,13 @@ const props = defineProps({
     },
     useUsername: {
         type: Boolean
-    }
+    },
+    user_type_options: {
+        type: Array,
+    },
+    shift_options: {
+        type: Array,
+    },
 });
 
 const routeGroupName = 'users';
@@ -24,6 +30,8 @@ const form = useForm({
     name: props.data.name ?? '',
     email: props.data.email ?? '',
     active: props.data.active,
+    user_type: props.data.user_type,
+    shift: props.data.shift,
     password: '',
 });
 </script>
@@ -34,7 +42,7 @@ const form = useForm({
 
         <div class="row g-3">
             <div v-if="useUsername" class="col-md-6">
-                <InputLabel for="username" value="Username" />
+                <InputLabel for="username" value="Username / Employee Code" />
                 <TextInput id="username" type="text" v-model="form.username" :invalid="form.errors.username" required />
                 <InputError :message="form.errors.username" />
             </div>
@@ -45,7 +53,7 @@ const form = useForm({
                 <InputError :message="form.errors.email" />
             </div>
 
-            <div class="col-6">
+            <div class="col-md-6">
                 <InputLabel for="password" value="Password" />
                 <TextInput id="password" type="password" v-model="form.password" :invalid="form.errors.password" />
                 <InputError :message="form.errors.password" />
@@ -56,6 +64,24 @@ const form = useForm({
                 <TextInput id="name" type="text" v-model="form.name" :invalid="form.errors.name" required />
                 <InputError :message="form.errors.name" />
             </div>
+
+            <div class="col-md-6">
+                <InputLabel for="user_type" value="User Type" />
+                <select class="form-select" name="user_type" v-model="form.user_type" :invalid="form.errors.user_type">
+                    <option v-for="v in user_type_options" :value="v">{{ v }}</option>
+                </select>
+                <InputError :message="form.errors.user_type" />
+            </div>
+
+            <div class="col-md-6">
+                <InputLabel for="shift" value="Shift" />
+                <select class="form-select" name="shift" v-model="form.shift" :invalid="form.errors.shift">
+                    <option :value="null">Select your shift</option>
+                    <option v-for="v in shift_options" :value="v">{{ v }}</option>
+                </select>
+                <InputError :message="form.errors.shift" />
+            </div>
+
             <div class="col-12">
                 <Checkbox id="checkActive" v-model:checked="form.active">
                     Active
@@ -67,4 +93,3 @@ const form = useForm({
         </div>
     </form>
 </template>
-

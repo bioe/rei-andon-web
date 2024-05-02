@@ -18,16 +18,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('rei')->name('api.rei.')->group(function () {
     Route::get('statuses', [ReiController::class, 'getStatuses'])->name('statuses');
-    Route::get('status', [ReiController::class, 'getLatestMachineRecord'])->name('latest');
     Route::post('status', [ReiController::class, 'postStatus'])->name('status');
-    Route::post('attend', [ReiController::class, 'postAttend'])->name('attend');
-    Route::post('resolve', [ReiController::class, 'postResolve'])->name('resolve');
+    Route::get('latest_record', [ReiController::class, 'getLatestMachineRecord'])->name('latest_record');
+    Route::post('latest_attend', [ReiController::class, 'postLatestAttend'])->name('latest_attend');
+    Route::post('latest_resolve', [ReiController::class, 'postLatestResolve'])->name('latest_resolve');
 });
 
 
 Route::prefix('watch')->name('api.watch.')->group(function () {
     Route::post('login', [WatchController::class, 'postLogin'])->name('login');
-    Route::get('latest', [WatchController::class, 'getLatestMachineRecord'])->name('latest');
+    Route::get('latest_record', [WatchController::class, 'getLatestMachineRecord'])->name('latest_record');
     Route::get('record/{id}', [WatchController::class, 'getRecord'])->name('record');
     Route::post('response', [WatchController::class, 'postResponse'])->name('response');
 });
