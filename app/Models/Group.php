@@ -13,6 +13,7 @@ class Group extends BaseModel
         'name',
         'description',
         'active',
+        'segment_code',
         'machine_list',
         'last_edit_user_id'
     ];
@@ -50,6 +51,13 @@ class Group extends BaseModel
         );
     }
 
+    protected function segmentCode(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => strtoupper($value)
+        );
+    }
+
     /*
     * Build Table Header
     */
@@ -58,6 +66,7 @@ class Group extends BaseModel
         $headers = [
             ['field' => 'name', 'title' => 'Name', 'sortable' => true],
             ['field' => 'description', 'title' => 'Description', 'sortable' => true],
+            ['field' => 'segment_code', 'title' => 'Segment / Zone', 'sortable' => false],
             ['field' => 'machine_list', 'title' => 'Machines', 'sortable' => false],
         ];
 

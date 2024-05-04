@@ -18,6 +18,7 @@ class PostStatusRequest extends FormRequest
         return  array_merge($rules, [
             'segment_code' => ['string', 'max:255', 'required'],
             'machine_code' => ['string', 'max:255', 'required'],
+            'machine_type' => ['string', 'max:255', 'required'],
             'employee_code' => ['string', 'max:255', 'required'],
             'status_id' => ['numeric', 'required'],
         ]);

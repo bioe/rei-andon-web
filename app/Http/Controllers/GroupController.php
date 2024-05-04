@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Http\Requests\UpdateGroupRequest;
+use App\Models\MachineType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -67,7 +68,8 @@ class GroupController extends Controller
             $data = Group::find($id);
         }
 
-        $type_of_machines = [['id' => 'DFD651', 'label' => 'DFD651'], ['id' => 'DFD6361', 'label' => 'DFD6361'], ['id' => 'DFD7161', 'label' => 'DFD7161']];
+        $mt = MachineType::all();
+        $type_of_machines = treeselect_options($mt, 'code', 'name');
         return Inertia::render('Group/Edit', [
             'data' => $data,
             'type_of_machines' => $type_of_machines

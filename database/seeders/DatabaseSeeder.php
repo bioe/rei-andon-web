@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\MachineType;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -25,5 +26,36 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('12345678'),
             'active' => true,
         ]);
+
+
+        //Create Machine Types
+        $types = [
+            ['code' => 'DFD651', 'name' => 'DFD651'],
+            ['code' => 'DFD6361', 'name' => 'DFD6361'],
+            ['code' => 'DFD6362', 'name' => 'DFD6362'],
+            ['code' => 'DFD7161', 'name' => 'DFD7161'],
+            ['code' => 'DFM2800', 'name' => 'DFM2800'],
+            ['code' => 'DGP8761', 'name' => 'DGP8761'],
+            ['code' => 'EAGLETI', 'name' => 'EAGLETI'],
+            ['code' => 'RAD2010', 'name' => 'RAD2010'],
+            ['code' => 'DRY_ETCH', 'name' => 'DRY_ETCH'],
+            ['code' => 'DIEBOND', 'name' => 'DIEBOND'],
+            ['code' => 'VIA_PLASMA', 'name' => 'VIA_PLASMA'],
+            ['code' => 'LASER_VIA', 'name' => 'LASER_VIA'],
+            ['code' => 'CU_SPUTTER', 'name' => 'CU_SPUTTER'],
+            ['code' => 'TAPPING', 'name' => 'TAPPING'],
+            ['code' => 'UV_CURE', 'name' => 'UV_CURE'],
+            ['code' => 'LASER_GROOVE', 'name' => 'LASER_GROOVE'],
+            ['code' => 'W_SORTER', 'name' => 'W_SORTER'],
+            ['code' => 'W_AOI_PANEL', 'name' => 'W_AOI_PANEL'],
+            ['code' => 'W_PLASMA', 'name' => 'W_PLASMA'],
+            ['code' => 'AP', 'name' => 'AP'],
+            ['code' => 'ABF_CURE', 'name' => 'ABF_CURE'],
+            ['code' => 'CAPCON', 'name' => 'CAPCON'],
+        ];
+
+        foreach ($types as $type) {
+            MachineType::create($type);
+        }
     }
 }

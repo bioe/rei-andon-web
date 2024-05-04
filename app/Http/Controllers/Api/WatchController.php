@@ -38,10 +38,22 @@ class WatchController extends ApiController
     /**
      * Return the latest record 
      */
-    public function getLatestMachineRecord(GetLatestRequest $request)
+    public function getLatestMachineRecord($employee_code)
     {
-        $data = $request->validated();
-        $record = StatusRecord::with(['status', 'responses'])->ofMachine($data)
+        //Check user and determine which record to show
+        $user = User::with('groups')->where('username', $employee_code)->first();
+        if ($user == null) return response()->json(null);
+
+        $data['machine_types'] = [];
+        $data['segment_codes'] = [];
+        foreach ($user->groups as $group) {
+            $data['segment_codes'][] = $group->segment_code;
+            $data['machine_types'] = array_merge($data['machine_types'], $group->machine_list);
+        }
+        $data['segment_codes'] = array_unique($data['segment_codes']);
+
+        $record = StatusRecord::with(['status', 'responses'])->ofInCategory($data)
+            ->ofIsNew()
             ->orderBy('created_at', 'desc')->first();
 
         return response()->json($record);

@@ -45,6 +45,7 @@ const destroy = (id, name) => {
 </script>
 
 <template>
+
     <Head :title="headerTitle" />
 
     <AuthenticatedLayout>
@@ -99,6 +100,7 @@ const destroy = (id, name) => {
                         </td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.description }}</td>
+                        <td>{{ item.segment_code }}</td>
                         <td>{{ item.machines_label }}</td>
                         <td>{{ formatDate(item.created_at) }}</td>
                     </tr>

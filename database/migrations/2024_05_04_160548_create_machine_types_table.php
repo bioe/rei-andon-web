@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('groups', function (Blueprint $table) {
+        Schema::create('machine_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->text('description')->nullable();
-            $table->string('segment_code')->nullable();
-            $table->text('machine_list')->nullable();
-            $table->boolean('active')->default(false);
-            $table->unsignedBigInteger('last_edit_user_id')->nullable();
+            $table->string('code')->unique();
+            $table->string('name');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('machine_types');
     }
 };

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('remark')->nullable();
             $table->string('segment_code')->nullabe();
             $table->string('machine_code')->nullabe();
+            $table->string('machine_type')->nullabe();
             $table->timestamp('attended_at')->nullable(); //When operator is infront of the machine and press "LOCAL"
             $table->integer('attend_duration_second')->nullable(); //seconds taken to attend
             $table->timestamp('resolved_at')->nullable(); //When machine turn back to GREEN
