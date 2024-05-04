@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\Api\GetLatestRequest;
+use App\Http\Requests\Api\GetLastRequest;
 use App\Http\Requests\Api\PostCodeRequest;
 use App\Http\Requests\Api\PostStatusRequest;
 use App\Models\ResponseRecord;
@@ -22,7 +22,7 @@ class ReiController extends ApiController
         return Status::select(['id', 'code', 'name', 'state', 'button_1', 'button_2'])->where('active', true)->get();
     }
 
-    public function getLatestMachineRecord(GetLatestRequest $request)
+    public function getLastMachineRecord(GetLastRequest $request)
     {
         $data = $request->validated();
         $record = StatusRecord::with(['status', 'responses'])->ofMachine($data)
@@ -38,13 +38,14 @@ class ReiController extends ApiController
     {
         $data = $request->validated();
         $data['origin'] = REI;
-        //Within 30 sec, assume they want to change the error / warning status, so do update
-        $record = StatusRecord::ofMachine($data)->where('created_at', '>=', Carbon::now()->subSeconds(30))->first();
+        //Within 60 sec, assume they want to change the error / warning status, so do update
+        $record = StatusRecord::ofMachine($data)->where('created_at', '>=', Carbon::now()->subSeconds(60))->orderBy('created_at', 'desc')->first();
         if ($record) {
             $record->update($data);
-            $output = StatusRecord::ofMachine($data)->first();
+            $output = StatusRecord::find($record->id);
         } else {
-            $output = StatusRecord::create($data);
+            $created = StatusRecord::create($data);
+            $output = StatusRecord::find($created->id);
         }
 
 

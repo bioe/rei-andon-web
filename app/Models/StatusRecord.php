@@ -23,6 +23,7 @@ class StatusRecord extends BaseModel
         'remark',
         'segment_code',
         'machine_code',
+        'machine_type',
         'attended_at',
         'attend_duration_second', //When operator is infront of the machine and press "LOCAL"
         'resolved_at',
@@ -44,6 +45,27 @@ class StatusRecord extends BaseModel
         );
     }
 
+    public function segmentCode(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => strtoupper($value)
+        );
+    }
+
+    public function machineCode(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => strtoupper($value)
+        );
+    }
+
+    public function machineType(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => strtoupper($value)
+        );
+    }
+
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
@@ -57,6 +79,20 @@ class StatusRecord extends BaseModel
     public function scopeOfMachine($query, array $data)
     {
         return $query->where("segment_code", strtoupper($data['segment_code']))
-            ->where('machine_code', strtoupper($data['machine_code']));
+            ->where('machine_code', strtoupper($data['machine_code']))
+            ->where('machine_type', strtoupper($data['machine_type']));
+    }
+
+    public function scopeOfInCategory($query, array $data)
+    {
+        return $query->whereIn("segment_code", $data['segment_codes'])
+            ->whereIn('machine_type', $data['machine_types']);
+    }
+
+    public function scopeOfIsNew($query)
+    {
+        return $query->whereDoesntHave('responses', function ($q) {
+            $q->where('attending', 1);
+        });
     }
 }

@@ -31,10 +31,12 @@ const form = useForm({
     description: props.data.description ?? '',
     machine_list: props.data.machine_list ?? [],
     active: props.data.active,
+    segment_code: props.data.segment_code ?? ''
 });
 </script>
 
 <template>
+
     <Head :title="headerTitle" />
 
     <AuthenticatedLayout>
@@ -67,6 +69,12 @@ const form = useForm({
                                     <TextAreaInput class="form-control" id="description" type="text"
                                         v-model="form.description" :invalid="form.errors.description" required />
                                     <InputError :message="form.errors.description" />
+                                </div>
+                                <div class="col-md-6">
+                                    <InputLabel for="segment_code" value="Segment / Zone" />
+                                    <TextInput id="segment_code" type="text" v-model="form.segment_code"
+                                        :invalid="form.errors.segment_code" required />
+                                    <InputError :message="form.errors.segment_code" />
                                 </div>
                                 <div class="col-md-6">
                                     <InputLabel for="machines" value="Machines" />

@@ -17,6 +17,7 @@ class UpdateGroupRequest extends FormRequest
             'name' => ['string', 'max:255'],
             'description' => ['string', 'max:255'],
             'active' => ['boolean'],
+            'segment_code' => ['string'],
             'machine_list' => ['array'],
         ];
     }

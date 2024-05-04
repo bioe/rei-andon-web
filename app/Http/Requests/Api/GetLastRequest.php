@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetLatestRequest extends FormRequest
+class GetLastRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -18,6 +18,7 @@ class GetLatestRequest extends FormRequest
         return  array_merge($rules, [
             'segment_code' => ['string', 'max:255', 'required'],
             'machine_code' => ['string', 'max:255', 'required'],
+            'machine_type' => ['string', 'max:255', 'required'],
         ]);
     }
 }
