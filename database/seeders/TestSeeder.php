@@ -49,6 +49,7 @@ class TestSeeder extends Seeder
                 'segment_code' => "ZONE A",
                 'employee_code' => "JOHN",
                 'machine_code' => "SAW-03",
+                'machine_type' => "DFD6361",
                 'status_id' => 1,
                 'origin' => "REI",
                 'attended_at' => Carbon::now()->addSeconds(99),
@@ -75,6 +76,7 @@ class TestSeeder extends Seeder
                 'segment_code' => "ZONE B",
                 'employee_code' => "MAX",
                 'machine_code' => "DFD-03",
+                'machine_type' => "DFD6361",
                 'status_id' => 2,
                 'origin' => "WATCH"
             ]
