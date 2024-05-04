@@ -6,7 +6,7 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
+  version: 1.0.1
 externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
@@ -45,22 +45,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-  /watch/latest_record:
+  /watch/latest_record/{employee_code}:
     get:
       tags:
         - Watch
-      summary: Get the latest machine record base on segment_code and machine_code
+      summary: Get the latest machine record base on employee
       operationId: getLatestMachineRecord
       parameters:
-        - name: segment_code
-          in: query
-          description: 'ZONE F'
-          required: true
-          schema:
-            type: string
-        - name: machine_code
-          in: query
-          description: 'SAW-03'
+        - name: employee_code
+          in: path
+          description: 'Username'
           required: true
           schema:
             type: string
@@ -174,12 +168,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-  /rei/latest_record:
+  /rei/last_record:
     get:
       tags:
         - Rei
-      summary: Get the latest machine record base on segment_code and machine_code
-      operationId: getLatestMachineRecord()
+      summary: Get the last machine record base on segment_code, machine_code and machine_type
+      operationId: getLastMachineRecord
+      parameters:
+        - name: segment_code
+          in: query
+          description: 'ZONE F'
+          required: true
+          schema:
+            type: string
+        - name: machine_code
+          in: query
+          description: 'SAW-03'
+          required: true
+          schema:
+            type: string
+        - name: machine_type
+          in: query
+          description: 'DFD6361'
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: successful operation
@@ -440,6 +453,9 @@ components:
         machine_code:
           type: string
           example: "SAW-03"
+        machine_type:
+          type: string
+          example: "DFD6361"
         employee_code:
           type: string
           example: "123444"
