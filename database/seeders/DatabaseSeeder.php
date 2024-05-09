@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\MachineType;
+use App\Models\Segment;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -56,6 +57,22 @@ class DatabaseSeeder extends Seeder
 
         foreach ($types as $type) {
             MachineType::create($type);
+        }
+
+        //Create Segment
+        $segments = [
+            ['code' => 'ZONE A', 'name' => 'ZONE A'],
+            ['code' => 'ZONE B', 'name' => 'ZONE B'],
+            ['code' => 'ZONE C', 'name' => 'ZONE C'],
+            ['code' => 'ZONE D', 'name' => 'ZONE D'],
+            ['code' => 'ZONE E', 'name' => 'ZONE E'],
+            ['code' => 'ZONE F', 'name' => 'ZONE F'],
+            ['code' => 'ZONE G', 'name' => 'ZONE G'],
+            ['code' => 'ZONE H', 'name' => 'ZONE H'],
+        ];
+
+        foreach ($segments as $v) {
+            Segment::create($v);
         }
     }
 }
