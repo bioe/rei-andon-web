@@ -48,6 +48,7 @@ const destroy = (id, name) => {
 </script>
 
 <template>
+
     <Head :title="headerTitle" />
 
     <AuthenticatedLayout>
@@ -76,7 +77,8 @@ const destroy = (id, name) => {
             </form>
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-                <Link class="btn btn-outline-primary btn-sm" :href="route(routeGroupName + '.create')">
+                <Link v-if="$page.props.auth.isEditable" class="btn btn-outline-primary btn-sm"
+                    :href="route(routeGroupName + '.create')">
                 <i class="bi bi-plus"></i>
                 Create
                 </Link>
@@ -85,14 +87,14 @@ const destroy = (id, name) => {
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr>
-                        <HeadRow>Actions</HeadRow>
+                        <HeadRow v-if="$page.props.auth.isEditable">Actions</HeadRow>
                         <HeadRow v-for="head in header" :field="head.field" :sort="head.sortable ? filters.sort : null"
                             @sortEvent="sort" :disabled="form.processing">{{ head.title }}</HeadRow>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(item, index) in list.data">
-                        <td width="10%">
+                        <td v-if="$page.props.auth.isEditable" width="10%">
                             <Link :href="route(routeGroupName + '.edit', item.id)" class="btn btn-sm btn-link">
                             <i class="bi bi-pencil"></i>
                             </Link>
@@ -100,6 +102,7 @@ const destroy = (id, name) => {
                                 class="btn btn-sm btn-link">
                                 <i class="bi bi-trash"></i>
                             </button>
+
                         </td>
                         <td v-if="useUsername">{{ item.username }}</td>
                         <td>{{ item.name }}</td>

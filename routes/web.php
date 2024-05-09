@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Reports\RecordReportController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WatchController;
@@ -39,7 +40,6 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::prefix('users')->name('users.')->group(function () {
-        //Do Something later
         Route::patch('menu/{id}', [UserController::class, 'patchMenu'])->name('menu.update');
         Route::patch('group/{id}', [UserController::class, 'patchGroup'])->name('group.update');
     });
@@ -47,6 +47,13 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::resource('statuses', StatusController::class);
     Route::resource('groups', GroupController::class);
     Route::resource('watches', WatchController::class);
+
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::prefix('records')->name('records.')->group(function () {
+            Route::get('/', [RecordReportController::class, 'index'])->name('index');
+            Route::delete('/destroy/{statusrecord}', [RecordReportController::class, 'destroy'])->name('destroy');
+        });
+    });
 });
 
 require __DIR__ . '/auth.php';

@@ -23,7 +23,7 @@ class StatusController extends Controller
         $list = Status::query()->when(!empty($filters['keyword']), function ($q) use ($filters) {
             $q->orWhere('name', 'like', '%' . $filters['keyword'] . '%');
             $q->orWhere('email', 'like', '%' . $filters['keyword'] . '%');
-        })->filterSort($filters)->paginate(50);
+        })->filterSort($filters)->paginate(config('table.page_limit'));
 
         return Inertia::render('Status/Index', [
             'header' => Status::header(),

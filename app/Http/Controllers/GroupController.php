@@ -25,7 +25,7 @@ class GroupController extends Controller
         $list = Group::query()->when(!empty($filters['keyword']), function ($q) use ($filters) {
             $q->orWhere('name', 'like', '%' . $filters['keyword'] . '%');
             $q->orWhere('description', 'like', '%' . $filters['keyword'] . '%');
-        })->filterSort($filters)->paginate(50);
+        })->filterSort($filters)->paginate(config('table.page_limit'));
 
         return Inertia::render('Group/Index', [
             'header' => Group::header(),

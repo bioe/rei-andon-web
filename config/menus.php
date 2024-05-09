@@ -34,6 +34,15 @@ return [
                 ],
             ]
 
+        ],
+        [
+            'title' => 'Reports',
+            'submenus' => [
+                [
+                    'title' => 'Records',
+                    'route' => 'reports.records.index'
+                ],
+            ]
         ]
     ]
 ];

@@ -73,7 +73,7 @@ class StatusRecord extends BaseModel
 
     public function responses(): HasMany
     {
-        return $this->hasMany(ResponseRecord::class);
+        return $this->hasMany(ResponseRecord::class)->orderBy('created_at', 'desc');
     }
 
     public function scopeOfMachine($query, array $data)
@@ -94,5 +94,22 @@ class StatusRecord extends BaseModel
         return $query->whereDoesntHave('responses', function ($q) {
             $q->where('attending', 1);
         });
+    }
+
+    /*
+    * Build Table Header
+    */
+    public static function header()
+    {
+        $headers = [
+            ['field' => 'machine_code', 'title' => 'Machine', 'sortable' => true],
+            ['field' => 'segment_code', 'title' => 'Zone', 'sortable' => true],
+            ['field' => 'employee_code', 'title' => 'Create Employee', 'sortable' => true],
+        ];
+
+        return array_merge($headers, [
+            ['field' => 'created_at', 'title' => 'Created At', 'sortable' => true],
+            ['field' => '', 'title' => 'Response', 'sortable' => false],
+        ]);
     }
 }
