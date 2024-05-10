@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Group;
 use App\Http\Requests\UpdateGroupRequest;
 use App\Models\MachineType;
+use App\Models\Segment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -70,9 +71,11 @@ class GroupController extends Controller
 
         $mt = MachineType::all();
         $type_of_machines = treeselect_options($mt, 'code', 'name');
+        $segments = Segment::all();
         return Inertia::render('Group/Edit', [
             'data' => $data,
-            'type_of_machines' => $type_of_machines
+            'type_of_machines' => $type_of_machines,
+            'segments' => $segments
         ]);
     }
 

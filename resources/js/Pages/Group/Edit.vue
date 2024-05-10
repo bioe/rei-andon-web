@@ -20,6 +20,9 @@ const props = defineProps({
     },
     type_of_machines: {
         type: Array
+    },
+    segments: {
+        type: Object
     }
 });
 
@@ -31,7 +34,7 @@ const form = useForm({
     description: props.data.description ?? '',
     machine_list: props.data.machine_list ?? [],
     active: props.data.active,
-    segment_code: props.data.segment_code ?? ''
+    segment_code: props.data.segment_code ?? null
 });
 </script>
 
@@ -67,13 +70,16 @@ const form = useForm({
                                 <div class="col-md-6">
                                     <InputLabel for="description" value="Description" />
                                     <TextAreaInput class="form-control" id="description" type="text"
-                                        v-model="form.description" :invalid="form.errors.description" required />
+                                        v-model="form.description" :invalid="form.errors.description" />
                                     <InputError :message="form.errors.description" />
                                 </div>
                                 <div class="col-md-6">
                                     <InputLabel for="segment_code" value="Segment / Zone" />
-                                    <TextInput id="segment_code" type="text" v-model="form.segment_code"
-                                        :invalid="form.errors.segment_code" required />
+                                    <select v-model="form.segment_code" id="segment_code" class="form-select"
+                                        :class="{ 'is-invalid': form.errors.segment_code }" required>
+                                        <option :value="null">Please select</option>
+                                        <option v-for="s in  segments" :value="s.code">{{ s.code }}</option>
+                                    </select>
                                     <InputError :message="form.errors.segment_code" />
                                 </div>
                                 <div class="col-md-6">

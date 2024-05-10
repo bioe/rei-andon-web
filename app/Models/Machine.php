@@ -28,8 +28,16 @@ class Machine extends BaseModel
         );
     }
 
-    public function machineType() {
+    public function machineType()
+    {
         return $this->belongsTo(MachineType::class, 'machine_type_id');
+    }
+
+    public function code(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => strtoupper($value)
+        );
     }
 
     /*
