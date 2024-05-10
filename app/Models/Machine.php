@@ -28,6 +28,10 @@ class Machine extends BaseModel
         );
     }
 
+    public function machineType() {
+        return $this->belongsTo(MachineType::class, 'machine_type_id');
+    }
+
     /*
     * Build Table Header
     */

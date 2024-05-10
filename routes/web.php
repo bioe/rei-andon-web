@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\MachineController;
+use App\Http\Controllers\MachineTypeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Reports\RecordReportController;
+use App\Http\Controllers\SegmentController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WatchController;
@@ -47,6 +50,9 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::resource('statuses', StatusController::class);
     Route::resource('groups', GroupController::class);
     Route::resource('watches', WatchController::class);
+    Route::resource('machinetypes', MachineTypeController::class);
+    Route::resource('machines', MachineController::class);
+    Route::resource('segments', SegmentController::class);
 
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::prefix('records')->name('records.')->group(function () {
