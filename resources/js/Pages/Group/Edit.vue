@@ -77,7 +77,7 @@ const form = useForm({
                                     <InputError :message="form.errors.segment_code" />
                                 </div>
                                 <div class="col-md-6">
-                                    <InputLabel for="machines" value="Machines" />
+                                    <InputLabel for="machines" value="Machines Types" />
                                     <treeselect v-model="form.machine_list" :multiple="true"
                                         :options="props.type_of_machines" placeholder="Select your machine(s)..." />
                                 </div>
