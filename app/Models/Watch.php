@@ -42,6 +42,13 @@ class Watch extends BaseModel
         );
     }
 
+    public function code(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => strtoupper($value)
+        );
+    }
+
     public function login_user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'login_user_id');

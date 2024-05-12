@@ -20,6 +20,7 @@ class StatusRecord extends BaseModel
         'status_id',
         'employee_id',
         'employee_code',
+        'employee_name', //From REI the username & code is combine USER#0000, separate out
         'remark',
         'segment_code',
         'machine_code',

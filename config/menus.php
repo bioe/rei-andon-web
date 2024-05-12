@@ -32,6 +32,18 @@ return [
                     'title' => 'Watches',
                     'route' => 'watches.index'
                 ],
+                [
+                    'title' => 'Machines',
+                    'route' => 'machines.index'
+                ],
+                [
+                    'title' => 'Machine Types',
+                    'route' => 'machinetypes.index'
+                ],
+                [
+                    'title' => 'Segment',
+                    'route' => 'segments.index'
+                ],
             ]
 
         ],

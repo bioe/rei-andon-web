@@ -5,32 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Status extends BaseModel
+class Machine extends BaseModel
 {
     use SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'code',
         'name',
-        'description',
-        'state',
-        'button_1',
-        'button_2',
         'active',
-        'sequence',
-        'last_edit_user_id'
+        'machine_type_id'
     ];
 
     //Default attributes
     protected $attributes = [
         'active' => true,
-        'button_1' => 'I will Attend',
-        'button_2' => 'Unable to Attend'
     ];
 
     public function active(): Attribute
@@ -38,6 +26,11 @@ class Status extends BaseModel
         return Attribute::make(
             get: fn (string $value) => $value ? true : false
         );
+    }
+
+    public function machineType()
+    {
+        return $this->belongsTo(MachineType::class, 'machine_type_id');
     }
 
     public function code(): Attribute
@@ -55,7 +48,6 @@ class Status extends BaseModel
         $headers = [
             ['field' => 'code', 'title' => 'Code', 'sortable' => true],
             ['field' => 'name', 'title' => 'Name', 'sortable' => true],
-            ['field' => 'state', 'title' => 'State', 'sortable' => true],
         ];
 
         return array_merge($headers, [
