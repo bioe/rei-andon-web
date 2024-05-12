@@ -38,6 +38,14 @@ class ReiController extends ApiController
     {
         $data = $request->validated();
         $data['origin'] = REI;
+
+        //REI incoming username is USER#0000, separate it to employee_name and employee_code field.
+        $emp = explode("#", $data['employee_code']);
+        if (count($emp) == 2) {
+            $data['employee_name'] = $emp[0];
+            $data['employee_code'] = $emp[1];
+        }
+
         //Within 60 sec, assume they want to change the error / warning status, so do update
         $record = StatusRecord::ofMachine($data)->where('created_at', '>=', Carbon::now()->subSeconds(60))->orderBy('created_at', 'desc')->first();
         if ($record) {

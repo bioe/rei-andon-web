@@ -40,6 +40,13 @@ class Status extends BaseModel
         );
     }
 
+    public function code(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => strtoupper($value)
+        );
+    }
+
     /*
     * Build Table Header
     */
