@@ -50,10 +50,10 @@ class ReiController extends ApiController
         $record = StatusRecord::ofMachine($data)->where('created_at', '>=', Carbon::now()->subSeconds(60))->orderBy('created_at', 'desc')->first();
         if ($record) {
             $record->update($data);
-            $output = StatusRecord::find($record->id);
+            $output = StatusRecord::with('status')->find($record->id);
         } else {
             $created = StatusRecord::create($data);
-            $output = StatusRecord::find($created->id);
+            $output = StatusRecord::with('status')->find($created->id);
         }
 
 
