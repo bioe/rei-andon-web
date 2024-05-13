@@ -52,7 +52,8 @@ class WatchController extends ApiController
         }
         $data['segment_codes'] = array_unique($data['segment_codes']);
 
-        $record = StatusRecord::with(['status', 'responses'])->ofInCategory($data)
+        //Only selected needed field, IOT watch can't support too many string
+        $record = StatusRecord::select('id', 'machine_Code', 'segment_code', 'status_id')->with(['status'])->ofInCategory($data)
             ->ofIsNew()
             ->orderBy('created_at', 'desc')->first();
 
