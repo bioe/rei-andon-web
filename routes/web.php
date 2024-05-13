@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Reports\RecordReportController;
 use App\Http\Controllers\SegmentController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\StatusRecordController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WatchController;
 use Illuminate\Foundation\Application;
@@ -53,6 +54,7 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::resource('machinetypes', MachineTypeController::class);
     Route::resource('machines', MachineController::class);
     Route::resource('segments', SegmentController::class);
+    Route::resource('statusrecords', StatusRecordController::class);
 
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::prefix('records')->name('records.')->group(function () {
