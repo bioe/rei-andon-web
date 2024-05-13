@@ -15,9 +15,10 @@ class MachineUpdateRequest extends FormRequest
     {
         $rules = [
             'code' => ['string', 'max:255', 'required'],
-            'name' => ['string', 'max:255', 'required'],
+            'name' => ['nullable', 'string', 'max:255'],
             'active' => ['boolean'],
-            'machine_type_id' => ['nullable'],
+            'machine_type_id' => ['required'],
+            'segment_id' => ['required'],
         ];
 
         return $rules;

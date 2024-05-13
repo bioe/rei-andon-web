@@ -17,6 +17,10 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    segments: {
+        type: Object,
+        default: () => ({}),
+    },
 });
 
 const routeGroupName = 'machines';
@@ -25,7 +29,8 @@ const headerTitle = ref('Machines');
 const form = useForm({
     code: props.data.code ?? '',
     name: props.data.name ?? '',
-    machine_type_id: props.data.machine_type_id ?? '',
+    machine_type_id: props.data.machine_type_id ?? null,
+    segment_id: props.data.segment_id ?? null,
     active: props.data.active,
 });
 
@@ -33,6 +38,7 @@ console.log(form);
 </script>
 
 <template>
+
     <Head :title="headerTitle" />
 
     <AuthenticatedLayout>
@@ -40,7 +46,8 @@ console.log(form);
             {{ headerTitle }}
         </template>
 
-        <form @submit.prevent="data.id == null ? form.post(route(routeGroupName + '.store')) : form.patch(route(routeGroupName + '.update', data.id))">
+        <form
+            @submit.prevent="data.id == null ? form.post(route(routeGroupName + '.store')) : form.patch(route(routeGroupName + '.update', data.id))">
             <div class="card">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">
@@ -55,20 +62,35 @@ console.log(form);
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <InputLabel for="m-code" value="Code" />
-                                    <TextInput id="m-code" type="text" v-model="form.code" :invalid="form.errors.code" required />
+                                    <TextInput id="m-code" type="text" v-model="form.code" :invalid="form.errors.code"
+                                        required />
                                     <InputError :message="form.errors.code" />
                                 </div>
                                 <div class="col-md-6">
                                     <InputLabel for="m-name" value="Name" />
-                                    <TextInput id="m-name" type="text" v-model="form.name" :invalid="form.errors.name" required />
+                                    <TextInput id="m-name" type="text" v-model="form.name"
+                                        :invalid="form.errors.name" />
                                     <InputError :message="form.errors.name" />
                                 </div>
                                 <div class="col-md-6">
                                     <InputLabel value="Machine Type" />
-                                    <select class="form-select" v-model="form.machine_type_id">
-                                        <option value="" selected disabled>Please select machine type here</option>
-                                        <option v-for="machine_type in props.machineTypes" :value="machine_type.id">{{ machine_type.name }}</option>
+                                    <select class="form-select" v-model="form.machine_type_id"
+                                        :class="{ 'is-invalid': form.errors.machine_type_id }">
+                                        <option :value="null" selected disabled>Please select machine type here</option>
+                                        <option v-for="mt in machineTypes" :value="mt.id">
+                                            {{ mt.name }}
+                                        </option>
                                     </select>
+                                    <InputError :message="form.errors.machine_type_id" />
+                                </div>
+                                <div class="col-md-6">
+                                    <InputLabel value="Segment / Zone" />
+                                    <select class="form-select" v-model="form.segment_id"
+                                        :class="{ 'is-invalid': form.errors.segment_id }">
+                                        <option :value="null" selected disabled>Please select zone here</option>
+                                        <option v-for="s in segments" :value="s.id">{{ s.name }}</option>
+                                    </select>
+                                    <InputError :message="form.errors.segment_id" />
                                 </div>
                                 <div class="col-12">
                                     <Checkbox id="checkActive" v-model:checked="form.active">

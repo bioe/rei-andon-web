@@ -23,7 +23,7 @@ class ResponseRecord extends BaseModel
         'status_record_id',
     ];
 
-    public function statusRecord(): BelongsTo
+    public function status_record(): BelongsTo
     {
         return $this->belongsTo(StatusRecord::class);
     }

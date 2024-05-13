@@ -8,6 +8,7 @@ use App\Models\MachineType;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use App\Http\Requests\MachineUpdateRequest;
+use App\Models\Segment;
 
 class MachineController extends Controller
 {
@@ -21,7 +22,7 @@ class MachineController extends Controller
             'keyword' => ''
         ]);
 
-        $list = Machine::query()->when(!empty($filters['keyword']), function ($q) use ($filters) {
+        $list = Machine::query()->with('machine_type')->with('segment')->when(!empty($filters['keyword']), function ($q) use ($filters) {
             $q->orWhere('code', 'like', '%' . $filters['keyword'] . '%');
             $q->orWhere('name', 'like', '%' . $filters['keyword'] . '%');
         })->filterSort($filters)->paginate(config('table.page_limit'));
@@ -63,16 +64,18 @@ class MachineController extends Controller
     public function edit(string $id = null)
     {
         $machineTypes = MachineType::all();
+        $segments = Segment::all();
 
-        if(null == $id){
+        if (null == $id) {
             $data = new Machine;
-        }else{
+        } else {
             $data = Machine::find($id);
         }
 
         return Inertia::render('Machine/Edit', [
             'data' => $data,
             'machineTypes' => $machineTypes,
+            'segments' => $segments
         ]);
     }
 
@@ -82,10 +85,10 @@ class MachineController extends Controller
     public function update(MachineUpdateRequest $request, string $id = null)
     {
         $data = $request->validated();
-        if(null == $id){
+        if (null == $id) {
             $data = Machine::create($data);
             return Redirect::route('machines.edit', $data->id)->with('message', 'Machine created successfully');
-        }else{
+        } else {
             Machine::find($id)->update($data);
             return Redirect::route('machines.edit', $id)->with('message', 'Machine updated successfully');
         }

@@ -13,7 +13,8 @@ class Machine extends BaseModel
         'code',
         'name',
         'active',
-        'machine_type_id'
+        'machine_type_id',
+        'segment_id'
     ];
 
     //Default attributes
@@ -28,9 +29,19 @@ class Machine extends BaseModel
         );
     }
 
-    public function machineType()
+    public function machine_type()
     {
         return $this->belongsTo(MachineType::class, 'machine_type_id');
+    }
+
+    public function segment()
+    {
+        return $this->belongsTo(Segment::class, 'segment_id');
+    }
+
+    public function last_status_record()
+    {
+        return $this->hasOne(StatusRecord::class, 'machine_code', 'code')->orderBy('created_at', 'desc');
     }
 
     public function code(): Attribute
@@ -48,6 +59,8 @@ class Machine extends BaseModel
         $headers = [
             ['field' => 'code', 'title' => 'Code', 'sortable' => true],
             ['field' => 'name', 'title' => 'Name', 'sortable' => true],
+            ['field' => '', 'title' => 'Type', 'sortable' => false],
+            ['field' => '', 'title' => 'Zone', 'sortable' => false],
         ];
 
         return array_merge($headers, [

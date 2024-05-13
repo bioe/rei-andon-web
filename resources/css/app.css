@@ -101,3 +101,8 @@ body.auth {
     /* Optionally, set the font weight */
     font-size: 2rem;
 }
+
+.machine-column {
+    height: 120px;
+    background-color: #009C41;
+}

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StatusRecord extends BaseModel
@@ -73,6 +74,16 @@ class StatusRecord extends BaseModel
     }
 
     public function responses(): HasMany
+    {
+        return $this->hasMany(ResponseRecord::class)->orderBy('created_at', 'desc');
+    }
+
+    public function attended(): HasOne
+    {
+        return $this->hasOne(ResponseRecord::class)->where('attending', true)->orderBy('created_at', 'desc');
+    }
+
+    public function response_success(): HasMany
     {
         return $this->hasMany(ResponseRecord::class)->orderBy('created_at', 'desc');
     }

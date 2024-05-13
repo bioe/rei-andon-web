@@ -48,13 +48,8 @@ return [
 
         ],
         [
-            'title' => 'Reports',
-            'submenus' => [
-                [
-                    'title' => 'Records',
-                    'route' => 'reports.records.index'
-                ],
-            ]
-        ]
+            'title' => 'Records',
+            'route' => 'statusrecords.index'
+        ],
     ]
 ];

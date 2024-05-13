@@ -18,10 +18,13 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    segments: {
+        type: Object,
+    }
 });
 
-const routeGroupName = 'machines';
-const headerTitle = ref('Machines');
+const routeGroupName = 'statusrecords.records';
+const headerTitle = ref('Records');
 const form = useForm(props.filters);
 
 const sort = (field) => {
@@ -37,7 +40,7 @@ const submit = () => {
 };
 
 const destroy = (id, name) => {
-    const c = confirm(`Delete this machine ${name} ?`);
+    const c = confirm(`Delete this status ${name} ?`);
     if (c) {
         router.delete(route(routeGroupName + '.destroy', id));
     }
@@ -64,6 +67,15 @@ const destroy = (id, name) => {
                             <label for="keywordInput">Keyword</label>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-floating mb-3">
+                            <select v-model="form.segment_code" class="form-select" id="zoneInput">
+                                <option :value='null'>All</option>
+                                <option v-for="s in segments" :value="s.code">{{ s.code }}</option>
+                            </select>
+                            <label for="zoneInput">Zone</label>
+                        </div>
+                    </div>
                     <div class="col-12">
                         <PrimaryButton type="submit" :disabled="form.processing">
                             <i class="bi bi-search"></i>
@@ -73,36 +85,26 @@ const destroy = (id, name) => {
                 </div>
             </form>
 
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-                <Link class="btn btn-outline-primary btn-sm" :href="route(routeGroupName + '.create')">
-                <i class="bi bi-plus"></i>
-                Create
-                </Link>
-            </div>
-
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr>
-                        <HeadRow>Actions</HeadRow>
+                        <HeadRow v-if="$page.props.auth.isEditable">Actions</HeadRow>
                         <HeadRow v-for="head in header" :field="head.field" :sort="head.sortable ? filters.sort : null"
                             @sortEvent="sort" :disabled="form.processing">{{ head.title }}</HeadRow>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(item, index) in list.data">
-                        <td width="10%">
-                            <Link :href="route(routeGroupName + '.edit', item.id)" class="btn btn-sm btn-link">
-                            <i class="bi bi-pencil"></i>
-                            </Link>
-                            <button @click="destroy(item.id, item.name)" class="btn btn-sm btn-link">
+                        <td v-if="$page.props.auth.isEditable" width="10%">
+                            <button @click="destroy(item.id, item.id)" class="btn btn-sm btn-link">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </td>
-                        <td>{{ item.code }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.machine_type.code ?? '' }}</td>
-                        <td>{{ item.segment.code ?? '' }}</td>
+                        <td>{{ item.machine_code }}</td>
+                        <td>{{ item.segment_code }}</td>
+                        <td>{{ item.employee_code }}</td>
                         <td>{{ formatDate(item.created_at) }}</td>
+                        <td>{{ formatDate(item.last_responsed_at) }} <br /> {{ item.last_responsed_employee }}</td>
                     </tr>
                 </tbody>
             </table>
