@@ -16,7 +16,8 @@ onBeforeMount(() => {
     <main class="form-signin w-100 m-auto text-center">
         <div>
             <Link href="/">
-            <ApplicationLogo class="mb-4" width="72" height="57" />
+            <!-- <ApplicationLogo class="mb-4" width="72" height="57" /> -->
+            <img src="/images/bio.png" width="70" height="70" />
             </Link>
         </div>
         <slot />
