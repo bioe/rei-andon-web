@@ -44,17 +44,16 @@ class WatchController extends ApiController
         $user = User::with('groups')->where('username', $employee_code)->first();
         if ($user == null) return response()->json(null);
 
-        $data['machine_types'] = [];
-        $data['segment_codes'] = [];
+        $group_query = [];
         foreach ($user->groups as $group) {
-            $data['segment_codes'][] = $group->segment_code;
-            $data['machine_types'] = array_merge($data['machine_types'], $group->machine_list);
+            $group_query[] = ['segment_code' => $group->segment_code, 'machine_types' => $group->machine_list];
         }
-        $data['segment_codes'] = array_unique($data['segment_codes']);
 
         //Only selected needed field, IOT watch can't support too many string
-        $record = StatusRecord::select('id', 'machine_code', 'segment_code', 'status_id')->with(['status'])->ofInCategory($data)
+        $record = StatusRecord::select('id', 'machine_code', 'segment_code', 'status_id')->with(['status'])->ofUserGroup($group_query)
             ->ofIsNew()
+            ->ofSelfNoResponse($employee_code)
+            ->where('created_at', ">=", Carbon::now()->subMinute(LATEST_RECORD_VIEW_MINUTE)) //Only show message that is within 15min, if no longer no longer appear
             ->orderBy('created_at', 'desc')->first();
 
         return response()->json($record);

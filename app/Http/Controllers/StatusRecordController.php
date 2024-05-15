@@ -115,7 +115,7 @@ class StatusRecordController extends Controller
 
         if (null == $id) {
             $data = StatusRecord::create($data);
-            return Redirect::route('dashboard', $data->id)->with('message', 'Record created successfully');
+            return Redirect::route('dashboard')->with('message', 'Record created successfully');
         } else {
             StatusRecord::find($id)->update($data);
             return Redirect::route('statusrecords.edit', $id)->with('message', 'Record updated successfully');

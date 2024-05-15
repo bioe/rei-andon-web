@@ -21,6 +21,6 @@ onBeforeMount(() => {
             </Link>
         </div>
         <slot />
-        <p class="my-5 text-muted">&copy; 2023</p>
+        <p class="my-5 text-muted">Bioenergy &copy; 2024 - v{{ $page.props.version }} </p>
     </main>
 </template>

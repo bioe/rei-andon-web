@@ -54,6 +54,11 @@ class DatabaseSeeder extends Seeder
             ['code' => 'AP', 'name' => 'AP'],
             ['code' => 'ABF_CURE', 'name' => 'ABF_CURE'],
             ['code' => 'CAPCON', 'name' => 'CAPCON'],
+            ['code' => 'SPC', 'name' => 'SPC'],
+            ['code' => 'LEETECH-DF', 'name' => 'LEETECH-DF'],
+            ['code' => 'HELLER-BAKE', 'name' => 'HELLER-BAKE'],
+            ['code' => 'SCHMOLL-LDI', 'name' => 'SCHMOLL-LDI'],
+            ['code' => 'RAYON', 'name' => 'RAYON'],
         ];
 
         foreach ($types as $type) {

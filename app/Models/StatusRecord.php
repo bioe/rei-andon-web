@@ -98,13 +98,39 @@ class StatusRecord extends BaseModel
     public function scopeOfInCategory($query, array $data)
     {
         return $query->whereIn("segment_code", $data['segment_codes'])
-            ->whereIn('machine_type', $data['machine_types']);
+            ->when(count($data['machine_types']) > 0, function ($q) use ($data) {
+                $q->whereIn('machine_type', $data['machine_types']);
+            });
+    }
+
+    /*
+    * Only those Relavent Group
+    */
+    public function scopeOfUserGroup($query, array $groups)
+    {
+        return $query->where(function ($query) use ($groups) {
+            foreach ($groups as $group) {
+                $query->orWhere(function ($query) use ($group) {
+                    $query->where('segment_code', $group['segment_code']);
+                    if (count($group['machine_types']) > 0) {
+                        $query->whereIn('machine_type', $group['machine_types']);
+                    }
+                });
+            }
+        });
     }
 
     public function scopeOfIsNew($query)
     {
         return $query->whereDoesntHave('responses', function ($q) {
             $q->where('attending', 1);
+        });
+    }
+
+    public function scopeOfSelfNoResponse($query, $employee_code)
+    {
+        return $query->whereDoesntHave('responses', function ($q) use ($employee_code) {
+            $q->where('employee_code', $employee_code);
         });
     }
 
