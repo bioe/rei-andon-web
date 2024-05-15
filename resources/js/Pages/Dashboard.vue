@@ -55,7 +55,8 @@ const fetchData = async () => {
                         <div class="d-flex justify-content-center align-items-center rounded-3 machine-column m-1">
                             <div class="text-center">
                                 <h3>{{ m.code }}</h3>
-                                <h4 v-if="m.last_status_record && m.last_status_record.attended == null">
+                                <h4
+                                    v-if="m.last_status_record && m.last_status_record.status != null && m.last_status_record.attended == null">
                                     {{ m.last_status_record.status.code }}
                                 </h4>
                                 <h5 v-if="m.last_status_record && m.last_status_record.attended != null">
