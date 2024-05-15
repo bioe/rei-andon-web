@@ -12,3 +12,7 @@ const OPERATOR = 'OPERATOR';
 
 const MORNING = 'MORNING';
 const NIGHT = 'NIGHT';
+
+//TODO:Move to Setting 
+const LATEST_RECORD_VIEW_MINUTE = 15;
+const DASHBOARD_REFRESH_SECOND = 10;

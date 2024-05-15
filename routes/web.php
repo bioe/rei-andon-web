@@ -37,6 +37,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard/refresh', [DashboardController::class, 'refresh'])->middleware(['auth', 'verified'])->name('dashboard.refresh');
 
 Route::middleware('auth', 'admin')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

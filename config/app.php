@@ -212,4 +212,9 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    /*
+    * App Version, please change when there is new upload to customer side
+    */
+    'version' => '1.0'
+
 ];

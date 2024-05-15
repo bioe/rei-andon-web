@@ -135,9 +135,7 @@ onMounted(() => {
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" :class="{ active: route().current('profile.edit') }"
                             href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img :src="'https://api.dicebear.com/6.x/bottts-neutral/svg?seed=' + $page.props.auth.user.name"
-                                alt="User Avatar" width="40" height="40" class="rounded-circle me-2"> {{
-                        $page.props.auth.user.name }}
+                            {{ $page.props.auth.user.name }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li>
