@@ -28,4 +28,11 @@ class MQTTService
             Log::error('sendResponse() ' . $e);
         }
     }
+
+    public static function sendTest()
+    {
+        $content['message'] = "Hello World";
+        MQTT::publish("andon/test", json_encode($content));
+        MQTT::disconnect();
+    }
 }
