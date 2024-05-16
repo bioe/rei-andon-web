@@ -83,6 +83,10 @@ class WatchController extends ApiController
             if ($response->attending) return response()->json(['message' => $response->employee_code . ' already accepted this task.']);
         }
 
+        //Try to get Employee name
+        $user = User::where("username", $data['employee_code'])->first();
+        if ($user) $data['employee_name'] = $user->name;
+
         //Append ResponseRecord Data
         $data['attending'] = ($record->status->button_1 == $data['response_option']) ? true : false;
         $data['response_duration_second'] = $now->diffInSeconds($record->created_at);

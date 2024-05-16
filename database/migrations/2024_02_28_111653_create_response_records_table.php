@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('employee_id')->nullable();
             $table->string('employee_code')->nullable();
+            $table->string('employee_name')->nullable();
             $table->string('response_option')->nullabe();
             $table->integer('response_duration_second')->nullable(); //seconds taken to response
             $table->boolean('attending')->nullable(); //They use response to button_1 (GOOD)
