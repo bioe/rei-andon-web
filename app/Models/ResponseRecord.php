@@ -17,6 +17,7 @@ class ResponseRecord extends BaseModel
     protected $fillable = [
         'employee_id',
         'employee_code',
+        'employee_name',
         'response_option',
         'attending',
         'response_duration_second',

@@ -19,7 +19,7 @@ class MQTTService
         $content["response_option"] = $r->response_option;
         $content["segment_code"] = $r->status_record->segment_code;
         $content["machine_code"] =  $r->status_record->machine_code;
-        $content["message"] = $r->employee_code . " - " . $r->response_option;
+        $content["message"] = $r->employee_name . " - " . $r->response_option;
 
         try {
             MQTT::publish(TOPIC_RESPONSE, json_encode($content));
@@ -27,5 +27,12 @@ class MQTTService
         } catch (Exception $e) {
             Log::error('sendResponse() ' . $e);
         }
+    }
+
+    public static function sendTest()
+    {
+        $content['message'] = "Hello World";
+        MQTT::publish("andon/test", json_encode($content));
+        MQTT::disconnect();
     }
 }

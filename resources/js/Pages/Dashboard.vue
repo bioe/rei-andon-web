@@ -60,7 +60,7 @@ const fetchData = async () => {
                                     {{ m.last_status_record.status.code }}
                                 </h4>
                                 <h5 v-if="m.last_status_record && m.last_status_record.attended != null">
-                                    #{{ m.last_status_record.attended.employee_code }} -
+                                    {{ m.last_status_record.attended.employee_name }} -
                                     {{ m.last_status_record.attended.response_option }}
                                 </h5>
                             </div>
