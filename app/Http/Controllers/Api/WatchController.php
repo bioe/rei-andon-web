@@ -12,6 +12,7 @@ use App\Models\Status;
 use App\Models\StatusRecord;
 use App\Models\User;
 use App\Models\Watch;
+use App\Services\MQTTService;
 use Carbon\Carbon;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
@@ -85,7 +86,9 @@ class WatchController extends ApiController
         //Append ResponseRecord Data
         $data['attending'] = ($record->status->button_1 == $data['response_option']) ? true : false;
         $data['response_duration_second'] = $now->diffInSeconds($record->created_at);
-        ResponseRecord::create($data);
+        $rr = ResponseRecord::create($data);
+
+        MQTTService::sendResponse($rr->id);
 
         return response()->json(['message' => 'Success']);
     }

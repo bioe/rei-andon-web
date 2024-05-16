@@ -16,3 +16,8 @@ const NIGHT = 'NIGHT';
 //TODO:Move to Setting 
 const LATEST_RECORD_VIEW_MINUTE = 15;
 const DASHBOARD_REFRESH_SECOND = 10;
+
+//MQTT
+const TOPIC_NOTIFICATION = "andon/notification";
+const TOPIC_RESPONSE = "andon/response";
+const TOPIC_HEARTBEAT = "andon/heartbeat";

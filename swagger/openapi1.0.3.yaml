@@ -570,7 +570,7 @@ components:
           type: string
           example: "I will attend now"
           description: Text from Button_1 or Button_2
-        segmemnt_code:
+        segment_code:
           type: string
           example: "Zone F"
         machine_code:

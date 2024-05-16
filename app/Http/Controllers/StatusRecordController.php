@@ -115,9 +115,11 @@ class StatusRecordController extends Controller
 
         if (null == $id) {
             $data = StatusRecord::create($data);
+            $this->sendMqtt();
             return Redirect::route('dashboard')->with('message', 'Record created successfully');
         } else {
             StatusRecord::find($id)->update($data);
+            $this->sendMqtt();
             return Redirect::route('statusrecords.edit', $id)->with('message', 'Record updated successfully');
         }
     }
@@ -129,5 +131,9 @@ class StatusRecordController extends Controller
     {
         $statusrecord->delete();
         return Redirect::route('statusrecords.index')->with('message', 'Record deleted successfully');
+    }
+
+    public function sendMqtt()
+    {
     }
 }
