@@ -17,7 +17,7 @@ class DashboardController extends Controller
     {
         $watches = Watch::with('login_user')->where('active', true)->get();
 
-        return Inertia::render('Dashboard', [
+        return Inertia::render('Dashboard/Dashboard', [
             'watches' => $watches,
             'group_machines' => $this->refreshMachine(),
             'refresh_second' => DASHBOARD_REFRESH_SECOND
@@ -30,7 +30,7 @@ class DashboardController extends Controller
         return response()->json($data);
     }
 
-    public function refreshMachine()
+    private function refreshMachine()
     {
         $time = Carbon::now()->subMinute(LATEST_RECORD_VIEW_MINUTE);
 
@@ -46,6 +46,19 @@ class DashboardController extends Controller
             if ($m->last_status_record != null && $m->last_status_record->created_at->lt($time)) {
                 $m->last_status_record = null;
                 $m->setRelation('last_status_record', null);
+            } else if ($m->last_status_record != null) {
+                $m->bg_colour = "bg-success";
+                //Show Status
+                $m->current_status_code = null;
+                //Show Person
+                $m->current_employee = null;
+                if ($m->last_status_record->attended == null) {
+                    $m->bg_colour = "bg-danger";
+                    $m->current_status_code = $m->last_status_record->status->code;
+                } else if ($m->last_status_record->attended != null) {
+                    $m->bg_colour = "bg-warning";
+                    $m->current_employee = $m->last_status_record->attended->employee_name . ' - ' . $m->last_status_record->attended->response_option;
+                }
             }
             $group_machines[$m->machine_type->code][] = $m;
         }

@@ -2,6 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { onMounted, onUnmounted, ref } from 'vue';
+import MachineBox from './MachineBox.vue';
 
 let intervalId;
 
@@ -49,25 +50,7 @@ const fetchData = async () => {
         <div v-for="(machines, group) in localGroupMachines" class="my-3 p-3 bg-body rounded shadow-sm">
             <h3>{{ group }}</h3>
             <div class="row">
-                <div v-for="m in machines" class="col-lg-3 text-light">
-                    <a :href="route('statusrecords.create') + '?machine_code=' + m.code"
-                        style="text-decoration:none; color: inherit;">
-                        <div class="d-flex justify-content-center align-items-center rounded-3 machine-column m-1">
-                            <div class="text-center">
-                                <h3>{{ m.code }}</h3>
-                                <h4
-                                    v-if="m.last_status_record && m.last_status_record.status != null && m.last_status_record.attended == null">
-                                    {{ m.last_status_record.status.code }}
-                                </h4>
-                                <h5 v-if="m.last_status_record && m.last_status_record.attended != null">
-                                    {{ m.last_status_record.attended.employee_name }} -
-                                    {{ m.last_status_record.attended.response_option }}
-                                </h5>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
+                <MachineBox v-for="m in machines" :machine="m"></MachineBox>
             </div>
         </div>
 
