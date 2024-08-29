@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('pre')) {
+if (!function_exists('treeselect_options')) {
     function treeselect_options($model, $id = 'id', $label = 'name')
     {
         $options = [];
