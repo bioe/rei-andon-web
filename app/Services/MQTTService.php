@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\ResponseRecord;
+use App\Models\Watch;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use PhpMqtt\Client\Facades\MQTT;
@@ -20,12 +21,28 @@ class MQTTService
         $content["segment_code"] = $r->status_record->segment_code;
         $content["machine_code"] =  $r->status_record->machine_code;
         $content["message"] = $r->employee_name . " - " . $r->response_option;
+        $content["response_yes"] = $r->attending;
 
         try {
             MQTT::publish(TOPIC_RESPONSE, json_encode($content));
             MQTT::disconnect();
         } catch (Exception $e) {
             Log::error('sendResponse() ' . $e);
+        }
+    }
+
+    /*
+    * Send to watch and watch will trigger POST: /watch/login
+    */
+    public static function sendLogin(Watch $watch, $mode)
+    {
+        $content['employee_code'] = $watch->login_user->username;
+        $content['login_mode'] = $mode; //WEB OR BADGE;
+        try {
+            MQTT::publish(TOPIC_LOGIN . "/" . $watch->code, json_encode($content));
+            MQTT::disconnect();
+        } catch (Exception $e) {
+            Log::error('sendLogin() ' . $e);
         }
     }
 

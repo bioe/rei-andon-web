@@ -37,30 +37,6 @@ class WatchController extends ApiController
     }
 
     /**
-     * Return the latest record 
-     */
-    public function getLatestMachineRecord($employee_code)
-    {
-        //Check user and determine which record to show
-        $user = User::with('groups')->where('username', $employee_code)->first();
-        if ($user == null) return response()->json(null);
-
-        $group_query = [];
-        foreach ($user->groups as $group) {
-            $group_query[] = ['segment_code' => $group->segment_code, 'machine_types' => $group->machine_list];
-        }
-
-        //Only selected needed field, IOT watch can't support too many string
-        $record = StatusRecord::select('id', 'machine_code', 'segment_code', 'status_id')->with(['status'])->ofUserGroup($group_query)
-            ->ofIsNew()
-            ->ofSelfNoResponse($employee_code)
-            ->where('created_at', ">=", Carbon::now()->subMinute(LATEST_RECORD_VIEW_MINUTE)) //Only show message that is within 15min, if no longer no longer appear
-            ->orderBy('created_at', 'desc')->first();
-
-        return response()->json($record);
-    }
-
-    /**
      * Return the selected record 
      */
     public function getRecord($id)
@@ -95,5 +71,43 @@ class WatchController extends ApiController
         MQTTService::sendResponse($rr->id);
 
         return response()->json(['message' => 'Success']);
+    }
+
+
+    //Polling method, if not using MQTT
+
+    /**
+     * Return the latest record 
+     */
+    public function getPollLatestMachineRecord($employee_code)
+    {
+        //Check user and determine which record to show
+        $user = User::with('groups')->where('username', $employee_code)->first();
+        if ($user == null) return response()->json(null);
+
+        $group_query = [];
+        foreach ($user->groups as $group) {
+            $group_query[] = ['segment_code' => $group->segment_code, 'machine_types' => $group->machine_list];
+        }
+
+        //Only selected needed field, IOT watch can't support too many string
+        $record = StatusRecord::select('id', 'machine_code', 'segment_code', 'status_id')->with(['status'])->ofUserGroup($group_query)
+            ->ofIsNew()
+            ->ofSelfNoResponse($employee_code)
+            ->where('created_at', ">=", Carbon::now()->subMinute(LATEST_RECORD_VIEW_MINUTE)) //Only show message that is within 15min, if no longer no longer appear
+            ->orderBy('created_at', 'desc')->first();
+
+        return response()->json($record);
+    }
+
+    /**
+     * Let watch check any one is trying to login > watch will prompt a confirmation box > postLogin
+     */
+    public function getPollLogin(Request $request, $watch_code)
+    {
+        $watch = Watch::with('login_user')->where('code', $watch_code)->whereNotNull('login_user_id')->whereNull('login_at')->first();
+        if ($watch) return response()->json(['employee_code' => $watch->login_user->username, 'login_mode' => WATCH_LOGIN_WEB]);
+
+        return response()->json(null);
     }
 }

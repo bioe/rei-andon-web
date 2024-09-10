@@ -24,6 +24,13 @@ class ResponseRecord extends BaseModel
         'status_record_id',
     ];
 
+    public function attending(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => $value ? true : false
+        );
+    }
+
     public function status_record(): BelongsTo
     {
         return $this->belongsTo(StatusRecord::class);

@@ -27,7 +27,12 @@ Route::prefix('rei')->name('api.rei.')->group(function () {
 
 Route::prefix('watch')->name('api.watch.')->group(function () {
     Route::post('login', [WatchController::class, 'postLogin'])->name('login');
-    Route::get('latest_record/{employee_code}', [WatchController::class, 'getLatestMachineRecord'])->name('latest_record');
     Route::get('record/{id}', [WatchController::class, 'getRecord'])->name('record');
     Route::post('response', [WatchController::class, 'postResponse'])->name('response');
+
+    //Polling
+    Route::prefix('poll')->name('poll.')->group(function () {
+        Route::get('latest_record/{employee_code}', [WatchController::class, 'getPollLatestMachineRecord'])->name('latest_record');
+        Route::get('login/{watch_code}', [WatchController::class, 'getPollLogin'])->name('response');
+    });
 });

@@ -21,3 +21,8 @@ const DASHBOARD_REFRESH_SECOND = 10;
 const TOPIC_NOTIFICATION = "andon/notification";
 const TOPIC_RESPONSE = "andon/response";
 const TOPIC_HEARTBEAT = "andon/heartbeat";
+const TOPIC_LOGIN = "andon/login"; //andon/login/{watch_code}
+
+//WATCH LOGIN MODE
+const WATCH_LOGIN_WEB = "WEB";
+const WATCH_LOGIN_BADGE = "BADGE";

@@ -42,8 +42,9 @@ const form = useForm({
 
         <div class="row g-3">
             <div v-if="useUsername" class="col-md-6">
-                <InputLabel for="username" value="Username / Employee Code" />
-                <TextInput id="username" type="text" v-model="form.username" :invalid="form.errors.username" required />
+                <InputLabel for="username" value="Employee Code" />
+                <TextInput id="username" type="text" v-model="form.username" :invalid="form.errors.username" required
+                    placeholder="Login ID" />
                 <InputError :message="form.errors.username" />
             </div>
 
@@ -73,14 +74,14 @@ const form = useForm({
                 <InputError :message="form.errors.user_type" />
             </div>
 
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
                 <InputLabel for="shift" value="Shift" />
                 <select class="form-select" name="shift" v-model="form.shift" :invalid="form.errors.shift">
                     <option :value="null">Select your shift</option>
                     <option v-for="v in shift_options" :value="v">{{ v }}</option>
                 </select>
                 <InputError :message="form.errors.shift" />
-            </div>
+            </div> -->
 
             <div class="col-12">
                 <Checkbox id="checkActive" v-model:checked="form.active">
