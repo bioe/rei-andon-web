@@ -21,8 +21,8 @@ const successMsg = ref('')
 const errorMsg = ref('')
 
 const form = useForm({
-    watch_code: 'w001',
-    username: '0000',
+    watch_code: '',
+    username: '',
 });
 
 const submit = () => {
