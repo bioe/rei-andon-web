@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\Api\GetLatestRequest;
 use App\Http\Requests\Api\PostLoginRequest;
-use App\Http\Requests\Api\PostResolveRequest;
+use App\Http\Requests\Api\PostLogoutRequest;
 use App\Http\Requests\Api\PostResponseRequest;
-use App\Http\Requests\Api\PostStatusRequest;
 use App\Models\ResponseRecord;
-use App\Models\Status;
 use App\Models\StatusRecord;
 use App\Models\User;
 use App\Models\Watch;
+use App\Models\WatchLoginLog;
 use App\Services\MQTTService;
 use Carbon\Carbon;
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
 
@@ -23,17 +20,53 @@ class WatchController extends ApiController
     public function postLogin(PostLoginRequest $request)
     {
         $data = $request->validated();
+
+        $log = WatchLoginLog::ofPending()->whereHas('watch', function ($q) use ($data) {
+            $q->where('code', $data['watch_code']);
+        })->whereHas('user', function ($q) use ($data) {
+            $q->where('username', $data['employee_code']);
+        })->orderBy('created_at', 'desc')->first();
+
+        if (isset($data['cancel']) && $data['cancel']) {
+            $log->cancel = true;
+            $log->save();
+            return response()->json(['message' => 'Login Cancelled']);
+        }
+
         $user = User::where('username', $data['employee_code'])->where('user_type', OPERATOR)->first(['id', 'username', 'shift']);
         if ($user == null) return response()->json(['message' => 'Employee not found'], 400);
 
+        if ($log) {
+            $log->success = true;
+            $log->login_at = Carbon::now();
+            $log->save();
+            $log->updateWatch();
+
+            return response()->json($user->append('group_ids')->makeHidden(['menu_flags', 'groups']));
+        } else {
+            return response()->json(['message' => 'Login invalid'], 400);
+        }
+    }
+
+    public function postLogout(PostLogoutRequest $request)
+    {
+        $data = $request->validated();
+
         $watch = Watch::where('code', $data['watch_code'])->first();
-        if ($watch) {
-            $watch->login_user_id = $user->id;
-            $watch->login_at = Carbon::now();
-            $watch->save();
+        $watch->login_user_id = null;
+        $watch->login_at = null;
+        $watch->save();
+
+        $log = WatchLoginLog::toLogout()->whereHas('watch', function ($q) use ($data) {
+            $q->where('code', $data['watch_code']);
+        })->orderBy('created_at', 'desc')->first();
+
+        if ($log) {
+            $log->logout_at = Carbon::now();
+            $log->save();
         }
 
-        return response()->json($user->append('group_ids')->makeHidden(['menu_flags', 'groups']));
+        return response()->json(['message' => 'Success']);
     }
 
     /**
@@ -105,8 +138,16 @@ class WatchController extends ApiController
      */
     public function getPollLogin(Request $request, $watch_code)
     {
-        $watch = Watch::with('login_user')->where('code', $watch_code)->whereNotNull('login_user_id')->whereNull('login_at')->first();
-        if ($watch) return response()->json(['employee_code' => $watch->login_user->username, 'login_mode' => WATCH_LOGIN_WEB]);
+        $log = WatchLoginLog::with('user')->ofPending()->whereHas('watch', function ($q) use ($watch_code) {
+            $q->where('code', $watch_code);
+        })->first();
+
+        if ($log)
+            return response()->json([
+                'employee_code' => $log->user->username,
+                'login_mode' => WATCH_LOGIN_WEB,
+                'timeout_second' => (config('setting.watch_login_timeout') - 2) //Login Window Appear for how many seconds
+            ]);
 
         return response()->json(null);
     }

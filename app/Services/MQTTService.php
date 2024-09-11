@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\ResponseRecord;
 use App\Models\Watch;
+use App\Models\WatchLoginLog;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use PhpMqtt\Client\Facades\MQTT;
@@ -34,12 +35,13 @@ class MQTTService
     /*
     * Send to watch and watch will trigger POST: /watch/login
     */
-    public static function sendLogin(Watch $watch, $mode)
+    public static function sendLogin(WatchLoginLog $log, $mode)
     {
-        $content['employee_code'] = $watch->login_user->username;
+        $content['employee_code'] = $log->user->username;
         $content['login_mode'] = $mode; //WEB OR BADGE;
+        $content['timeout_second'] = (config('setting.watch_login_timeout') - 2); //Login Window Appear for how many seconds
         try {
-            MQTT::publish(TOPIC_LOGIN . "/" . $watch->code, json_encode($content));
+            MQTT::publish(TOPIC_LOGIN . "/" . $log->watch->code, json_encode($content));
             MQTT::disconnect();
         } catch (Exception $e) {
             Log::error('sendLogin() ' . $e);

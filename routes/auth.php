@@ -61,4 +61,4 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/watch_login', [WatchLoginController::class, 'index'])->name('watch_login');
 Route::post('/watch_login', [WatchLoginController::class, 'postLogin'])->name('watch_login');
-Route::get('/watch_login/{watch}', [WatchLoginController::class, 'getIsLogin'])->name('watch_is_login');
+Route::get('/watch_login/{watch_login_log}', [WatchLoginController::class, 'getIsLogin'])->name('watch_is_login');

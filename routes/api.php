@@ -27,6 +27,8 @@ Route::prefix('rei')->name('api.rei.')->group(function () {
 
 Route::prefix('watch')->name('api.watch.')->group(function () {
     Route::post('login', [WatchController::class, 'postLogin'])->name('login');
+    Route::post('logout', [WatchController::class, 'postLogout'])->name('logout');
+
     Route::get('record/{id}', [WatchController::class, 'getRecord'])->name('record');
     Route::post('response', [WatchController::class, 'postResponse'])->name('response');
 

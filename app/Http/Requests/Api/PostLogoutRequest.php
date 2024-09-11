@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostLoginRequest extends FormRequest
+class PostLogoutRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,9 +16,7 @@ class PostLoginRequest extends FormRequest
         //$this->user = id
         $rules = [];
         return  array_merge($rules, [
-            'employee_code' => ['string', 'max:255', 'required'],
             'watch_code' => ['string', 'max:255', 'required'],
-            'cancel' => ['nullable', 'boolean'],
         ]);
     }
 }

@@ -38,9 +38,10 @@ class WatchLoginRequest extends FormRequest
      */
     public function authenticate(): void
     {
-        $watch = Watch::where('code', $this->watch_code)->first();
-        $user = User::where('username', $this->username)->where('user_type', OPERATOR)->first();
+        $watch = Watch::where('code', $this->watch_code)->where('active', true)->first();
+        $user = User::where('username', $this->username)->where('user_type', OPERATOR)->where('active', true)->first();
 
+        $this->watch = $watch;
         $this->user = $user;
 
         if (!$watch || !$user) {

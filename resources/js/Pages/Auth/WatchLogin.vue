@@ -11,7 +11,7 @@ const props = defineProps({
     timeout_sec: {
         type: Number
     },
-    watch_login_id: {
+    watch_login_log_id: {
         type: Number
     }
 });
@@ -39,7 +39,7 @@ let interval = null;
 let timeout = null;
 //Wait until the watch accept the login, too long then timeout
 const loginTimeout = () => {
-    interval = setInterval(checkIsLogin, 1000, props.watch_login_id);
+    interval = setInterval(checkIsLogin, 1000, props.watch_login_log_id);
 
     timeout = setTimeout(() => {
         reset();
@@ -69,7 +69,7 @@ function reset() {
     <GuestLayout>
 
         <Head title="Watch Login" />
-        <h1 class="h3 mb-3 fw-normal">Andon Watch Login {{ watch_login_id }}</h1>
+        <h1 class="h3 mb-3 fw-normal">Andon Watch Login</h1>
         <Alert :message="successMsg" :status="'success'" />
         <Alert :message="errorMsg" :status="'danger'" />
 
