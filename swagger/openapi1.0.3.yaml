@@ -580,3 +580,7 @@ components:
           type: string
           example: "0000 - I will attend now"
           description: Text to appear in REI
+        response_yes:
+          type: boolean
+          description: "Yes or No from the watch button"
+        

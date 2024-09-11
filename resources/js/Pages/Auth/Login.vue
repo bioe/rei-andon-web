@@ -43,15 +43,15 @@ const submit = () => {
             <template v-if="useUsername">
                 <div class="form-floating" :class="{ 'is-invalid': form.errors.username }">
                     <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.username }"
-                        id="floatingUsername" placeholder="john" required autofocus v-model="form.username">
-                    <label for="floatingEmail">Username</label>
+                        id="floatingUsername" required autofocus v-model="form.username" placeholder="Employee Code">
+                    <label for="floatingUsername">Employee Code</label>
                 </div>
                 <InputError class="my-1" :message="form.errors.username" />
             </template>
             <template v-else>
                 <div class="form-floating" :class="{ 'is-invalid': form.errors.email }">
-                    <input type="email" class="form-control" :class="{ 'is-invalid': form.errors.email }" id="floatingEmail"
-                        placeholder="name@example.com" required autofocus v-model="form.email">
+                    <input type="email" class="form-control" :class="{ 'is-invalid': form.errors.email }"
+                        id="floatingEmail" placeholder="name@example.com" required autofocus v-model="form.email">
                     <label for="floatingEmail">Email address</label>
                 </div>
                 <InputError class="my-1" :message="form.errors.email" />
@@ -74,9 +74,13 @@ const submit = () => {
             </GuestPrimaryButton>
 
             <div class="mt-4">
-                <Link v-if="canResetPassword" :href="route('password.request')"> Forgot your password?
+                <Link :href="route('watch_login')"> Watch Login
                 </Link>
             </div>
+            <!-- <div class="mt-4">
+                <Link v-if="canResetPassword" :href="route('password.request')"> Forgot your password?
+                </Link>
+            </div> -->
         </form>
     </GuestLayout>
 </template>

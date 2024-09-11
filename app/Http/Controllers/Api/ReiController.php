@@ -79,7 +79,7 @@ class ReiController extends ApiController
     }
 
     /**
-     * When Towerlight turn back to Green, call postResolve
+     * When Towerlight turn back to Green, call postLatestResolve
      */
     public function postLatestResolve(PostCodeRequest $request)
     {

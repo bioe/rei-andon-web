@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('model')->nullable();
             $table->string('ip_address')->nullable();
             $table->boolean('active')->default(false);
-            $table->boolean('is_connected')->default(false);
+            $table->boolean('is_connected')->default(false); //Heartbeat to show the watch is still connected to WIFI
             $table->unsignedBigInteger('login_user_id')->nullable();
             $table->timestamp('login_at')->nullable();
             $table->unsignedBigInteger('last_edit_user_id')->nullable();

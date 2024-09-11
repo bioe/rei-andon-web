@@ -59,13 +59,15 @@ class User extends Authenticatable //implements MustVerifyEmail
     ];
 
     protected $appends = [
-        'menu_flags', 'employee_code', 'logout_time'
+        'menu_flags',
+        'employee_code',
+        'logout_time'
     ];
 
     protected function active(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => $value ? true : false
+            get: fn(string $value) => $value ? true : false
         );
     }
 
@@ -73,7 +75,7 @@ class User extends Authenticatable //implements MustVerifyEmail
     {
         if (env(LOGIN_USERNAME, false)) {
             return Attribute::make(
-                set: fn (string $value) => $value != null ? strtolower($value) : null,
+                set: fn(string $value) => $value != null ? strtolower($value) : null,
             );
         }
         return Attribute::make();
@@ -82,14 +84,14 @@ class User extends Authenticatable //implements MustVerifyEmail
     protected function employeeCode(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => isset($attributes['username']) ? $attributes['username'] : ''
+            get: fn(mixed $value, array $attributes) => isset($attributes['username']) ? $attributes['username'] : ''
         );
     }
 
     protected function logoutTime(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => isset($attributes['shift']) && $attributes['shift'] == NIGHT ? "07:00" : "19:00"
+            get: fn(mixed $value, array $attributes) => isset($attributes['shift']) && $attributes['shift'] == NIGHT ? "07:00" : "19:00"
         );
     }
 
@@ -97,7 +99,7 @@ class User extends Authenticatable //implements MustVerifyEmail
     protected function menuFlags(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => $this->set_menu_flag()
+            get: fn(mixed $value, array $attributes) => $this->set_menu_flag()
         );
     }
 
@@ -105,7 +107,7 @@ class User extends Authenticatable //implements MustVerifyEmail
     protected function activeMenus(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => $this->set_menu_flag()
+            get: fn(mixed $value, array $attributes) => $this->set_menu_flag()
         );
     }
 
@@ -137,7 +139,7 @@ class User extends Authenticatable //implements MustVerifyEmail
     {
         $headers = [];
         if (env(LOGIN_USERNAME, false)) {
-            $headers[] = ['field' => 'username', 'title' => 'Username', 'sortable' => true];
+            $headers[] = ['field' => 'username', 'title' => 'Employee Code', 'sortable' => true];
         }
         return array_merge($headers, [
             ['field' => 'name', 'title' => 'Name', 'sortable' => true],

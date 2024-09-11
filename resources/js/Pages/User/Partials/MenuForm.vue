@@ -74,13 +74,13 @@ const removeAll = () => {
                         <!-- {{ menu }} -->
                         <InputLabel class="kt-checkbox">
                             <template v-if="menu.route">
-                                <input type="hidden" :name="'form.menus[' + cutName(menu.route) + '][active]'" value="0">
+                                <input type="hidden" :name="'form.menus[' + cutName(menu.route) + '][active]'"
+                                    value="0">
                                 <Checkbox :id="menu.title" :name="'form.menus[' + cutName(menu.route) + '][active]'"
                                     v-model:checked="form.menus[cutName(menu.route)].active" value="1">
                                     {{ menu.title }}
                                 </Checkbox>
                                 <span></span>
-                                here
                             </template>
                             <template v-else>
                                 <input type="hidden" :name="'form.menus[' + (menu.title) + '][active]'" value="0">
@@ -96,13 +96,15 @@ const removeAll = () => {
                                     <template v-if="sub.route">
                                         <input type="hidden" :name="'form.menus[' + cutName(sub.route) + '][active]'"
                                             value="0">
-                                        <checkbox :id="sub.title" :name="'form.menus[' + cutName(sub.route) + '][active]'"
+                                        <checkbox :id="sub.title"
+                                            :name="'form.menus[' + cutName(sub.route) + '][active]'"
                                             v-model:checked="form.menus[cutName(sub.route)].active" value="1">
                                             {{ sub.title }}
                                         </checkbox>
                                     </template>
                                     <template v-else>
-                                        <input type="hidden" :name="'form.menus[' + (sub.title) + '][active]'" value="0">
+                                        <input type="hidden" :name="'form.menus[' + (sub.title) + '][active]'"
+                                            value="0">
                                         <Checkbox :id="sub.title" :name="'form.menus[' + sub.title + '][active]'"
                                             v-model:checked="form.menus[sub.title].active" value="1">
                                             {{ sub.title }}
@@ -124,7 +126,8 @@ const removeAll = () => {
                                             <template v-else>
                                                 <input type="hidden" :name="'form.menus[' + (sub2.title) + '][active]'"
                                                     value="0">
-                                                <Checkbox :id="sub2.title" :name="'form.menus[' + sub2.title + '][active]'"
+                                                <Checkbox :id="sub2.title"
+                                                    :name="'form.menus[' + sub2.title + '][active]'"
                                                     v-model:checked="form.menus[sub2.title].active" value="1">
                                                     {{ sub2.title }}
                                                 </Checkbox>
