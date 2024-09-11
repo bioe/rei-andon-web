@@ -53,9 +53,13 @@ class WatchController extends ApiController
         $data = $request->validated();
 
         $watch = Watch::where('code', $data['watch_code'])->first();
-        $watch->login_user_id = null;
-        $watch->login_at = null;
-        $watch->save();
+        if ($watch) {
+            $watch->login_user_id = null;
+            $watch->login_at = null;
+            $watch->save();
+        } else {
+            return response()->json(['message' => 'Watch not found.'], 400);
+        }
 
         $log = WatchLoginLog::toLogout()->whereHas('watch', function ($q) use ($data) {
             $q->where('code', $data['watch_code']);
