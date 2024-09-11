@@ -24,5 +24,5 @@ const TOPIC_HEARTBEAT = "andon/heartbeat";
 const TOPIC_LOGIN = "andon/login"; //andon/login/{watch_code}
 
 //WATCH LOGIN MODE
-const WATCH_LOGIN_WEB = "WEB";
-const WATCH_LOGIN_BADGE = "BADGE";
+const WATCH_LOGIN_WEB = "WEB"; //Require to Accept Login in the watch
+const WATCH_LOGIN_BADGE = "BADGE"; //Skip Accept Login in the watch
