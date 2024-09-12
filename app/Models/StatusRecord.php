@@ -43,28 +43,28 @@ class StatusRecord extends BaseModel
     public function active(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => $value ? true : false
+            get: fn(string $value) => $value ? true : false
         );
     }
 
     public function segmentCode(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => strtoupper($value)
+            set: fn(string $value) => strtoupper($value)
         );
     }
 
     public function machineCode(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => strtoupper($value)
+            set: fn(string $value) => strtoupper($value)
         );
     }
 
     public function machineType(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => strtoupper($value)
+            set: fn(string $value) => strtoupper($value)
         );
     }
 
@@ -142,12 +142,13 @@ class StatusRecord extends BaseModel
         $headers = [
             ['field' => 'machine_code', 'title' => 'Machine', 'sortable' => true],
             ['field' => 'segment_code', 'title' => 'Zone', 'sortable' => true],
-            ['field' => 'employee_code', 'title' => 'Create Employee', 'sortable' => true],
-        ];
-
-        return array_merge($headers, [
+            ['field' => 'employee_code', 'title' => 'Request By', 'sortable' => true],
             ['field' => 'created_at', 'title' => 'Created At', 'sortable' => true],
             ['field' => '', 'title' => 'Response', 'sortable' => false],
-        ]);
+            ['field' => '', 'title' => 'Attend', 'sortable' => false],
+            ['field' => '', 'title' => 'Resolve', 'sortable' => false],
+        ];
+
+        return $headers;
     }
 }

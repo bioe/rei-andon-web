@@ -133,7 +133,5 @@ class StatusRecordController extends Controller
         return Redirect::route('statusrecords.index')->with('message', 'Record deleted successfully');
     }
 
-    public function sendMqtt()
-    {
-    }
+    public function sendMqtt() {}
 }
