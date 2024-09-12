@@ -23,7 +23,7 @@ const props = defineProps({
     }
 });
 
-const routeGroupName = 'statusrecords.records';
+const routeGroupName = 'statusrecords';
 const headerTitle = ref('Records');
 const form = useForm(props.filters);
 
@@ -104,7 +104,13 @@ const destroy = (id, name) => {
                         <td>{{ item.segment_code }}</td>
                         <td>{{ item.employee_code }}</td>
                         <td>{{ formatDate(item.created_at) }}</td>
-                        <td>{{ formatDate(item.last_responsed_at) }} <br /> {{ item.last_responsed_employee }}</td>
+                        <td>{{ formatDate(item.last_responsed_at) }} 
+                            <template v-if="item.last_responsed_employee">
+                            <br /> By: {{ item.last_responsed_employee }}
+                            </template>
+                        </td>
+                        <td>{{ formatDate(item.attended_at) }}</td>
+                        <td>{{ formatDate(item.resolved_at) }}</td>
                     </tr>
                 </tbody>
             </table>
