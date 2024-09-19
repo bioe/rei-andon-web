@@ -106,7 +106,7 @@ const destroy = (id, name) => {
                         </td>
                         <td v-if="useUsername">{{ item.username }}</td>
                         <td>{{ item.name }}</td>
-                        <td>{{ item.email }}</td>
+                        <td>{{ item.user_type }}</td>
                         <td>{{ formatDate(item.created_at) }}</td>
                     </tr>
                 </tbody>

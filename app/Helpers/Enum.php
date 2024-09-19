@@ -8,6 +8,7 @@ const WATCH = "WATCH";
 const WEB = "WEB";
 
 const ADMIN = 'ADMIN';
+const ENGINEER = 'ENGINEER';
 const OPERATOR = 'OPERATOR';
 
 const MORNING = 'MORNING';

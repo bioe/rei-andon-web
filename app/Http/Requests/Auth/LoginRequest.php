@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -45,11 +46,20 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
+        //Prevent operator login
+        $cond = $this->only(env(LOGIN_USERNAME, false) ? 'username' : 'email');
+        $u = User::where($cond)->when(!env('OPERATOR_ALLOW_BACKEND_LOGIN', false), function ($q) {
+            $q->where('user_type', '!=', OPERATOR);
+        })->first();
+        if (!$u) {
+            throw ValidationException::withMessages([
+                'email' => 'User have no access.',
+                'username' => "User have no access.",
+            ]);
+        }
+
         $data = $this->only(env(LOGIN_USERNAME, false) ? 'username' : 'email', 'password');
         $data['active'] = true; //Active True
-        if (env('LOGIN_ADMIN_ONLY', false)) {
-            $data['user_type'] = ADMIN;
-        }
 
         if (!Auth::attempt($data, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());

@@ -111,11 +111,6 @@ class User extends Authenticatable //implements MustVerifyEmail
         );
     }
 
-    public function groups(): BelongsToMany
-    {
-        return $this->belongsToMany(Group::class, 'group_user', 'user_id', 'group_id');
-    }
-
     protected function groupIds(): Attribute
     {
         return Attribute::make(
@@ -129,6 +124,19 @@ class User extends Authenticatable //implements MustVerifyEmail
         );
     }
 
+    protected function isEditable(): Attribute
+    {
+        return Attribute::make(
+            get: function (mixed $value, array $attributes) {
+                return $this->user_type == ADMIN || $this->user_type == ENGINEER;
+            }
+        );
+    }
+
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class, 'group_user', 'user_id', 'group_id');
+    }
 
     //Static Functions Below Here
 
@@ -201,7 +209,7 @@ class User extends Authenticatable //implements MustVerifyEmail
 
     public static function user_type_options()
     {
-        return [ADMIN, OPERATOR];
+        return [ADMIN, ENGINEER, OPERATOR];
     }
 
     public static function shift_options()
