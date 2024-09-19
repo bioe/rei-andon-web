@@ -1,11 +1,16 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
+import InputLabel from '@/Components/InputLabel.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import Alert from '@/Components/Alert.vue';
 import GuestPrimaryButton from '@/Components/Guest/GuestPrimaryButton.vue';
 import axios from 'axios';
+// import the component
+import Treeselect from "@zanmato/vue3-treeselect";
+// import the styles
+import "@zanmato/vue3-treeselect/dist/vue3-treeselect.min.css";
 
 const props = defineProps({
     timeout_sec: {
@@ -15,13 +20,12 @@ const props = defineProps({
         type: Number
     }
 });
-
 const isLoading = ref(false)
 const successMsg = ref('')
 const errorMsg = ref('')
 
 const form = useForm({
-    watch_code: '',
+    watch_code: null,
     username: '',
 });
 
@@ -29,7 +33,7 @@ const submit = () => {
     isLoading.value = true;
     errorMsg.value = "";
     successMsg.value = "";
-    form.post(route('watch_login'), {
+    form.post(route('watch_login.main'), {
         onSuccess: (res) => loginTimeout(),
         onError: () => isLoading.value = false
     })
@@ -48,7 +52,7 @@ const loginTimeout = () => {
 }
 
 function checkIsLogin(id) {
-    axios.get(route('watch_is_login', id)).then(function (response) {
+    axios.get(route('watch_login.is_login', id)).then(function (response) {
         if (response.data.success) {
             reset();
             form.reset();
@@ -63,6 +67,15 @@ function reset() {
     clearTimeout(timeout);
     isLoading.value = false;
 }
+
+function loadOptions({ action, searchQuery, callback }) {
+      if (action === "ASYNC_SEARCH" ) {
+        axios.get(route('watch_login.available',{'keyword':searchQuery})).then(function (response){
+            console.log(response.data);
+            callback(null, response.data);
+        });
+      }
+    }
 </script>
 
 <template>
@@ -75,13 +88,20 @@ function reset() {
 
 
         <form @submit.prevent="submit">
-            <div class="form-floating" :class="{ 'is-invalid': form.errors.watch_code }">
+            <div class="text-start">
+                <InputLabel for="watch" value="Watch Code" />
+                <treeselect v-model="form.watch_code" 
+                        :async="true" :load-options="loadOptions"
+                        placeholder="Enter Watch Code" />
+            </div>
+            <!-- <div class="form-floating" :class="{ 'is-invalid': form.errors.watch_code }">
                 <input type="text" class="form-control" id="floatingCode" placeholder="Code"
                     :class="{ 'is-invalid': form.errors.watch_code }" v-model="form.watch_code" required
                     autocomplete="false">
+                   
                 <label for="floatingCode">Watch Code</label>
             </div>
-            <InputError class="my-1" :message="form.errors.watch_code" />
+            <InputError class="my-1" :message="form.errors.watch_code" /> -->
 
 
             <div class="form-floating my-2" :class="{ 'is-invalid': form.errors.username }">

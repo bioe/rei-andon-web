@@ -23,7 +23,7 @@ class WatchController extends Controller
         $list = Watch::query()->when(!empty($filters['keyword']), function ($q) use ($filters) {
             $q->orWhere('name', 'like', '%' . $filters['keyword'] . '%');
             $q->orWhere('email', 'like', '%' . $filters['keyword'] . '%');
-        })->filterSort($filters)->paginate(config('table.page_limit'));
+        })->with('login_user')->filterSort($filters)->paginate(config('table.page_limit'));
 
         return Inertia::render('Watch/Index', [
             'header' => Watch::header(),

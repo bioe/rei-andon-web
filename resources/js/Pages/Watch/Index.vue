@@ -101,6 +101,7 @@ const destroy = (id, name) => {
                         </td>
                         <td>{{ item.code }}</td>
                         <td>{{ item.ip_address }}</td>
+                        <td>{{ item.login_user?.username ?? '' }}</td>
                         <td>{{ formatDate(item.created_at) }}</td>
                     </tr>
                 </tbody>

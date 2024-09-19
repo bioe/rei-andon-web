@@ -59,6 +59,9 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 });
 
-Route::get('/watch_login', [WatchLoginController::class, 'index'])->name('watch_login');
-Route::post('/watch_login', [WatchLoginController::class, 'postLogin'])->name('watch_login');
-Route::get('/watch_login/{watch_login_log}', [WatchLoginController::class, 'getIsLogin'])->name('watch_is_login');
+Route::prefix('watch_login')->name('watch_login.')->group(function () {
+    Route::get('/', [WatchLoginController::class, 'index'])->name('main');
+    Route::post('/', [WatchLoginController::class, 'postLogin'])->name('main');
+    Route::get('/is_login/{watch_login_log}', [WatchLoginController::class, 'getIsLogin'])->name('is_login');
+    Route::get('/available', [WatchLoginController::class, 'getAvailableWatch'])->name('available');
+});

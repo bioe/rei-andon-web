@@ -37,4 +37,6 @@ Route::prefix('watch')->name('api.watch.')->group(function () {
         Route::get('latest_record/{employee_code}', [WatchController::class, 'getPollLatestMachineRecord'])->name('latest_record');
         Route::get('login/{watch_code}', [WatchController::class, 'getPollLogin'])->name('response');
     });
+
+    Route::get('time', [WatchController::class, 'getTime'])->name('time');
 });

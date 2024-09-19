@@ -74,7 +74,7 @@ const submit = () => {
             </GuestPrimaryButton>
 
             <div class="mt-4">
-                <Link :href="route('watch_login')"> Watch Login
+                <Link :href="route('watch_login.main')"> Watch Login
                 </Link>
             </div>
             <!-- <div class="mt-4">

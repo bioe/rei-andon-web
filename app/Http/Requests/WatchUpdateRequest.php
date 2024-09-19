@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Watch;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class WatchUpdateRequest extends FormRequest
@@ -15,7 +17,7 @@ class WatchUpdateRequest extends FormRequest
     {
         return  [
             'code' => ['string', 'max:255'],
-            'ip_address' => ['ip', 'max:255'],
+            'ip_address' => ['ip', 'max:255', Rule::unique(Watch::class)->ignore($this->ip_address)],
             'active' => ['boolean'],
         ];
     }

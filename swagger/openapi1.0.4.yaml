@@ -1,0 +1,682 @@
+openapi: 3.0.3
+info:
+  title: REI Andon
+  contact:
+    email: eric@bio-energy.com.my
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.4
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://localhost/api/
+tags:
+  - name: Watch
+    description: API Call use in Watch
+  - name: Polling Watch
+    description: Polling Method, if not using MQTT
+  - name: Rei
+    description: API Call use in REI
+  - name: MQTT
+    description: MQTT Topic and Schema
+paths:
+  /watch/login:
+    post:
+      tags:
+        - Watch
+      summary: Login with employee code only
+      operationId: postLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Update fail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /watch/logout:
+    post:
+      tags:
+        - Watch
+      summary: Watch Logout, update backend
+      operationId: postLogout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Logout'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Update fail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /watch/record/{id}:
+    get:
+      tags:
+        - Watch
+      summary: Get the status record by id
+      operationId: getRecord
+      parameters:
+        - name: id
+          in: path
+          description: 'ZONE F'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusRecord'
+        '400':
+          description: Fail to get Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /watch/response:
+    post:
+      tags:
+        - Watch
+      summary: Update after button_1 or button_2 clicked
+      operationId: postResponse
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WatchResponse'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Update fail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /watch/poll/latest_record/{employee_code}:
+    get:
+      tags:
+        - Polling Watch
+      summary: Get the latest machine record base on employee
+      operationId: getPollLatestMachineRecord
+      parameters:
+        - name: employee_code
+          in: path
+          description: 'Username'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchStatusRecord'
+        '400':
+          description: Fail to get Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /watch/poll/login/{watch_code}:
+    get:
+      tags:
+        - Polling Watch
+      summary: Keep Checking anyone trying to login to this watch
+      operationId: getPollLogin
+      parameters:
+        - name: watch_code
+          in: path
+          description: 'W001'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MQTTLogin'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /rei/statuses:
+    get:
+      tags:
+        - Rei
+      summary: Get List of Status, Eg. E001, E002, W001, W002
+      operationId: getStatuses
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Status'
+        '400':
+          description: Fail to get Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /rei/status:
+    post:
+      tags:
+        - Rei
+      summary: Operator select a status and call for help
+      operationId: postStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostStatusRequest'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusRecord'
+        '400':
+          description: Fail to get Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /rei/last_record:
+    get:
+      tags:
+        - Rei
+      summary: Get the last machine record base on segment_code, machine_code and machine_type
+      operationId: getLastMachineRecord
+      parameters:
+        - name: segment_code
+          in: query
+          description: 'ZONE F'
+          required: true
+          schema:
+            type: string
+        - name: machine_code
+          in: query
+          description: 'SAW-03'
+          required: true
+          schema:
+            type: string
+        - name: machine_type
+          in: query
+          description: 'DFD6361'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusRecord'
+        '400':
+          description: Fail to get Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /rei/latest_attend:
+    post:
+      tags:
+        - Rei
+      summary: Update the attend time of latest machine record base on segment_code and machine_code
+      operationId: postLatestAttend
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCodeRequest'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Fail to get Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /rei/latest_resolve:
+    post:
+      tags:
+        - Rei
+      summary: Update the resolve time of latest machine record base on segment_code and machine_code
+      operationId: postLatestResolve
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCodeRequest'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Fail to get Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /andon/notification:
+    get:
+      tags:
+        - MQTT
+      summary: Operator selected a status, message to send to the watch
+      responses:
+        '200':
+          description: mqtt json output
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MQTTNotification'
+  /andon/response:
+    get:
+      tags:
+        - MQTT
+      summary: Watch user select a button and reply
+      responses:
+        '200':
+          description: mqtt json output
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MQTTResponse'
+  /andon/heartbeat:
+    get:
+      tags:
+        - MQTT
+      summary: Update the watch heartbeat
+      responses:
+        '200':
+          description: mqtt json output
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MQTTHeartbeat'
+  /andon/login/{watch_code}:
+    get:
+      tags:
+        - MQTT
+      summary: Watch to trigger /watch/login API
+      parameters:
+        - name: watch_code
+          in: path
+          description: 'Watch Code'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: mqtt json output
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MQTTLogin'
+components:
+  schemas:
+    Login:
+      type: object
+      properties:
+        employee_code:
+          type: string
+          example: "123444"
+        watch_code:
+          type: string
+          example: "Watch001"
+        cancel:
+          type: boolean
+          description: Optional, if watch send cancel set this to true
+          example: false
+    Logout:
+      type: object
+      properties:
+        watch_code:
+          type: string
+          example: "Watch001"
+    WatchResponse:
+      type: object
+      required:
+        - status_record_id
+        - employee_code
+        - response_option
+      properties:
+        status_record_id:
+          type: integer
+          example: 1
+          description: Call for help record id 
+        employee_code:
+          type: string
+          example: "123456"
+          description: Employee Code after login
+        response_option:
+          type: string
+          example: "I will attend now"
+          description: Text from Button_1 or Button_2
+    StatusRecord:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        status_id:
+          type: integer
+          example: 2
+        employee_id:
+          type: integer
+          example: 2
+        employee_code:
+          type: string
+          example: "123555"
+        remark:
+          type: string
+          example: "Some long remark"
+        segment_code:
+          type: string
+          example: "Zone F"
+          description: "Eg. Davinci Zone A,B,C,E"
+        machine_code:
+          type: string
+          example: "SAW-03"
+          description: "Need to be same as REI"
+        attended_at:
+          type: string
+          format: date-time
+        attend_duration_second:
+          type: integer
+          example: 10
+          description: "Time it took to be infront of the machine, when switch from REMOTE to LOCAL"
+        resolved_at:
+          type: string
+          format: date-time
+        resolve_duration_second:
+          type: integer
+          example: 10
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        status:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/Status'
+        responses:
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Response'
+    WatchStatusRecord:
+      type: object
+      description: Reduce the load in IOT Watch
+      properties:
+        id:
+          type: integer
+          example: 1
+        status_id:
+          type: integer
+          example: 2
+        segment_code:
+          type: string
+          example: "Zone F"
+          description: "Eg. Davinci Zone A,B,C,E"
+        machine_code:
+          type: string
+          example: "SAW-03"
+          description: "Need to be same as REI"
+        status:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/Status'
+    Status:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        code:
+          type: string
+          example: "E0001"
+          description: Error Code
+        name:
+          type: string
+          example: "Machine Failure"
+          description: Error Name
+        state:
+          type: string
+          example: "warning|error"
+          description: Type of error, ui warning show yellow and error show red
+        button_1:
+          type: string
+          example: "I will attend now"
+          description: Positive response button
+        button_2:
+          type: string
+          example: "I am not able attend"
+          description: Negative response button
+    Response:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        employee_id:
+          type: integer
+          example: 2
+        employee_code:
+          type: string
+          example: "123555"
+        response_option:
+          type: string
+          example: "I will attend"
+          description: Selected button response
+        response_duration_second:
+          type: integer
+          example: 99
+          description: Time taken to perform this response
+        status_record_id:
+          type: integer
+          example: 1
+        attending:
+          type: boolean
+          description: To flag this operator is now attending this status record
+        created_at:
+          type: string
+          format: date-time
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        employee_code:
+          type: string
+          example: "123444"
+        group_ids:
+          type: array
+          description: Store in watch, this group id is use to determine what notification they will receive
+          items:
+            type: integer
+          example: [1, 2, 3]
+        shift:
+          type: string
+          description: Operator belongs to MORNING or NIGHT shift
+          example: "MORNING"
+        logout_time:
+          type: string
+          description: When shift time reach force logout, 24HR format
+          example: "19:00"
+    PostStatusRequest:
+      type: object
+      properties:
+        segment_code:
+          type: string
+          example: "ZONE F"
+        machine_code:
+          type: string
+          example: "SAW-03"
+        machine_type:
+          type: string
+          example: "DFD6361"
+        employee_code:
+          type: string
+          example: "123444"
+        status_id:
+          type: integer
+          example: 1
+    PostCodeRequest:
+      type: object
+      properties:
+        segment_code:
+          type: string
+          example: "ZONE F"
+        machine_code:
+          type: string
+          example: "SAW-03"
+    ApiResponse:
+      type: object
+      properties:
+         message:
+          type: string
+    MQTTNotification:
+      type: object
+      properties:
+        record_id:
+          type: integer
+          description: StatuRecord table
+          example: 1
+        status_id:
+          type: integer
+          description: Status table
+          example: 1
+        group_id:
+          type: integer
+          description: Group table, only display notification if employee having same group id
+          example: 1
+        message:
+          type: string
+          example: "SAW-03 E001 Machine Down"
+        error_code:
+          type: string
+          example: "E001"
+        button1:
+          type: string
+          example: "I will attend"
+        button2:
+          type: string
+          example: "Unable to attend"
+        state:
+          type: string
+          example: "error|warning"
+        machinecode:
+          type: string
+          example: "SAW-03"
+    MQTTHeartbeat:
+      type: object
+      properties:
+        watch_code:
+          type: string
+          description: Watch Code
+          example: "Watch001"
+        is_alive:
+          type: boolean
+          example: true
+    MQTTResponse:
+      type: object
+      properties:
+        status_record_id:
+          type: integer
+          example: 1
+          description: Call for help record id 
+        employee_code:
+          type: string
+          example: "0000"
+          description: Employee Code after login
+        error_code:
+          type: string
+          example: "E001"
+        error_name:
+          type: string
+          example: "Machine Down"
+        response_option:
+          type: string
+          example: "I will attend now"
+          description: Text from Button_1 or Button_2
+        segment_code:
+          type: string
+          example: "Zone F"
+        machine_code:
+          type: string
+          example: "SAW-03"
+        message:
+          type: string
+          example: "0000 - I will attend now"
+          description: Text to appear in REI
+        response_yes:
+          type: boolean
+          description: "Yes or No from the watch button"
+    MQTTLogin:
+      type: object
+      properties:
+        employee_code:
+          type: string
+          description: The Employee Code
+          example: "0000"
+        login_mode:
+          type: string
+          description: WEB or BADGE
+          example: "WEB"
+        timeout_second:
+          type: number
+          description: Close Login window in Watch after time end
+          example: 20
