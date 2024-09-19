@@ -1,0 +1,1 @@
+import{k as a,f as r,p as n,o as l,h as o,t as c,n as i,u as m}from"./app-b234bed5.js";const f={__name:"Alert",props:{message:{type:String},status:{type:String,default:"danger"}},setup(e){const s=e,t=a(()=>"alert-"+s.status);return(p,u)=>r((l(),o("div",{class:i(["alert",m(t)]),role:"alert"},c(e.message),3)),[[n,e.message]])}};export{f as _};
