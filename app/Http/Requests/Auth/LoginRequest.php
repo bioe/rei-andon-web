@@ -47,6 +47,9 @@ class LoginRequest extends FormRequest
 
         $data = $this->only(env(LOGIN_USERNAME, false) ? 'username' : 'email', 'password');
         $data['active'] = true; //Active True
+        if (env('LOGIN_ADMIN_ONLY', false)) {
+            $data['user_type'] = ADMIN;
+        }
 
         if (!Auth::attempt($data, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
