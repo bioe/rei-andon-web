@@ -52,6 +52,8 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::resource('statuses', StatusController::class);
     Route::resource('groups', GroupController::class);
     Route::resource('watches', WatchController::class);
+    Route::post('watches/logout/{watch}', [WatchController::class, 'postLogout'])->name('watches.logout');
+
     Route::resource('machinetypes', MachineTypeController::class);
     Route::resource('machines', MachineController::class);
     Route::resource('segments', SegmentController::class);
