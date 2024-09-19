@@ -21,7 +21,7 @@ class WatchLoginController extends Controller
     {
         return Inertia::render('Auth/WatchLogin', [
             'timeout_sec' => config('setting.watch_login_timeout', 1) * 1000,
-            'watch_login_log_id' => $request->session()->get('watch_login_log_id') //Login success get from flash session
+            'watch_login_log_id' => $request->session()->get('watch_login_log_id'), //Login success get from flash session
         ]);
     }
 
@@ -46,7 +46,7 @@ class WatchLoginController extends Controller
 
         //Send MQTT
         MQTTService::sendLogin($log, WATCH_LOGIN_WEB);
-        return Redirect::route('watch_login')->with('watch_login_log_id', $log->id);
+        return Redirect::route('watch_login.main')->with('watch_login_log_id', $log->id);
     }
 
     public function getIsLogin(WatchLoginLog $watch_login_log)
@@ -57,5 +57,20 @@ class WatchLoginController extends Controller
             return response()->json(['success' => true, 'message' => 'Login cancel by ' . $watch_login_log->watch->code]);
         }
         return response()->json(['success' => false]);
+    }
+
+    public function getAvailableWatch(Request $request)
+    {
+        return response()->json($this->availableWatchOptions($request->keyword));
+    }
+
+    private function availableWatchOptions($keyword = null)
+    {
+        $watch = Watch::whereNull('login_user_id')
+            ->when($keyword != null && !empty($keyword), function ($q) use ($keyword) {
+                $q->where('code', 'like', '%' . $keyword . '%');
+            })->get();
+        $list = treeselect_options($watch, 'code', 'code');
+        return $list;
     }
 }

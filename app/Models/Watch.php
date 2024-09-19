@@ -31,21 +31,21 @@ class Watch extends BaseModel
     public function active(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => $value ? true : false
+            get: fn(string $value) => $value ? true : false
         );
     }
 
     public function isConnected(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => $value ? true : false
+            get: fn(string $value) => $value ? true : false
         );
     }
 
     public function code(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => strtoupper($value)
+            set: fn(string $value) => strtoupper($value)
         );
     }
 
@@ -62,6 +62,8 @@ class Watch extends BaseModel
         $headers = [
             ['field' => 'code', 'title' => 'Code', 'sortable' => true],
             ['field' => 'ip_address', 'title' => 'IP Address', 'sortable' => true],
+            ['field' => '', 'title' => 'Login Operator', 'sortable' => false],
+
         ];
 
         return array_merge($headers, [

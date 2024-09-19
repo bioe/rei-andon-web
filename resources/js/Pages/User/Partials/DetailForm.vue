@@ -48,15 +48,15 @@ const form = useForm({
                 <InputError :message="form.errors.username" />
             </div>
 
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
                 <InputLabel for="email" value="Email" />
                 <TextInput id="email" type="email" v-model="form.email" :invalid="form.errors.email" required />
                 <InputError :message="form.errors.email" />
-            </div>
+            </div> -->
 
             <div class="col-md-6">
                 <InputLabel for="password" value="Password" />
-                <TextInput id="password" type="password" v-model="form.password" :invalid="form.errors.password" />
+                <TextInput id="password" type="password" v-model="form.password" :invalid="form.errors.password" placeholder="Leave blank if no change" />
                 <InputError :message="form.errors.password" />
             </div>
 

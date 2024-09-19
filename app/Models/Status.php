@@ -29,21 +29,21 @@ class Status extends BaseModel
     //Default attributes
     protected $attributes = [
         'active' => true,
-        'button_1' => 'I will Attend',
-        'button_2' => 'Unable to Attend'
+        'button_1' => 'WILL ATTEND',
+        'button_2' => 'UNABLE TO ATTEND'
     ];
 
     public function active(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => $value ? true : false
+            get: fn(string $value) => $value ? true : false
         );
     }
 
     public function code(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => strtoupper($value)
+            set: fn(string $value) => strtoupper($value)
         );
     }
 
