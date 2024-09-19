@@ -151,7 +151,7 @@ class User extends Authenticatable //implements MustVerifyEmail
         }
         return array_merge($headers, [
             ['field' => 'name', 'title' => 'Name', 'sortable' => true],
-            ['field' => 'user_type', 'title' => 'User Type', 'sortable' => true],
+            ['field' => 'user_type', 'title' => 'User Role', 'sortable' => true],
             ['field' => 'created_at', 'title' => 'Created At'],
         ]);
     }
