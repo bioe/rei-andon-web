@@ -41,13 +41,18 @@ class WatchLoginRequest extends FormRequest
         $watch = Watch::where('code', $this->watch_code)->where('active', true)->first();
         $user = User::where('username', $this->username)->where('user_type', OPERATOR)->where('active', true)->first();
 
+        $user_login_watch = null;
+        if ($user) {
+            $user_login_watch = Watch::where('login_user_id', $user->id)->where('active', true)->first();
+        }
+
         $this->watch = $watch;
         $this->user = $user;
 
-        if (!$watch || !$user) {
+        if (!$watch || !$user || $user_login_watch) {
             throw ValidationException::withMessages([
                 'watch_code' => $watch == null ? "Watch Code not found." : null,
-                'username' => $user == null ? "Employee Code not found." : null,
+                'username' => $user == null ? "Employee Code not found." : ($user_login_watch ? "This employee login to " . $user_login_watch->code : null),
             ]);
         }
     }
