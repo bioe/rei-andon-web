@@ -39,4 +39,5 @@ Route::prefix('watch')->name('api.watch.')->group(function () {
     });
 
     Route::get('time', [WatchController::class, 'getTime'])->name('time');
+    Route::get('test', [WatchController::class, 'getTest'])->name('test');
 });
