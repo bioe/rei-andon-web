@@ -189,11 +189,13 @@ class WatchController extends ApiController
         //     "sunrise" => Carbon::now()->getTimestamp(),
         //     "sunset" => Carbon::now()->getTimestamp()
         // ];
-        $data['dt'] = Carbon::now()->getTimestamp();
         $timezoneOffset = Carbon::now()->format("P");
         list($hours, $minutes) = sscanf($timezoneOffset, '%d:%d');
         $offsetInSeconds = ($hours * 3600) + ($minutes * 60);
         $data['timezone'] = $offsetInSeconds;
+        $data['local'] = Carbon::now()->getTimestamp() + $offsetInSeconds;
+        $data['utc'] = Carbon::now()->getTimestamp();
+
 
         return response()->json($data);
     }
