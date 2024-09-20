@@ -67,7 +67,7 @@ const form = useForm({
             </div>
 
             <div class="col-md-6">
-                <InputLabel for="user_type" value="User Type" />
+                <InputLabel for="user_type" value="User Role" />
                 <select class="form-select" name="user_type" v-model="form.user_type" :invalid="form.errors.user_type">
                     <option v-for="v in user_type_options" :value="v">{{ v }}</option>
                 </select>

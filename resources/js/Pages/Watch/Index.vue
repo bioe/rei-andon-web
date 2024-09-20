@@ -42,6 +42,13 @@ const destroy = (id, name) => {
         router.delete(route(routeGroupName + '.destroy', id));
     }
 };
+
+const logout = (id, name) => {
+    const c = confirm(`Logout operator from watch ${name} ?`);
+    if (c) {
+        router.post(route(routeGroupName + '.logout', id));
+    }
+};
 </script>
 
 <template>
@@ -97,6 +104,9 @@ const destroy = (id, name) => {
                             </Link>
                             <button @click="destroy(item.id, item.name)" class="btn btn-sm btn-link">
                                 <i class="bi bi-trash"></i>
+                            </button>
+                            <button v-if="item.login_user" @click="logout(item.id, item.code)" class="btn btn-sm btn-link" title="Force Logout">
+                                <i class="bi bi-door-closed"></i>
                             </button>
                         </td>
                         <td>{{ item.code }}</td>

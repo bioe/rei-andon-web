@@ -10,7 +10,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'watch_login_timeout' => 20, //seconds
+    'watch_login_timeout' => 75, //seconds
 
 
 

@@ -92,4 +92,15 @@ class WatchController extends Controller
         $watch->delete();
         return Redirect::route('watches.index')->with('message', 'Watch deleted successfully');
     }
+
+    /**
+     * Clear Login Data
+     */
+    public function postLogout(Watch $watch)
+    {
+        $watch->login_user_id = null;
+        $watch->login_at = null;
+        $watch->save();
+        return Redirect::route('watches.index')->with('message', 'Watch ' . $watch->code . ' logout successfully');
+    }
 }
