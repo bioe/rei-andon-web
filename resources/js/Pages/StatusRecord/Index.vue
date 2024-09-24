@@ -104,6 +104,10 @@ const destroy = (id, name) => {
                         <td>{{ item.segment_code }}</td>
                         <td>{{ item.employee_code }}</td>
                         <td>{{ formatDate(item.created_at) }}</td>
+                        <td>
+                            {{ item.status.code }}<br/>
+                            {{ item.status.name }}
+                        </td>
                         <td>{{ formatDate(item.last_responsed_at) }} 
                             <template v-if="item.last_responsed_employee">
                             <br /> By: {{ item.last_responsed_employee }}
