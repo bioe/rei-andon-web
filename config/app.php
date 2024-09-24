@@ -215,6 +215,6 @@ return [
     /*
     * App Version, please change when there is new upload to customer side
     */
-    'version' => '1.1'
+    'version' => '1.2'
 
 ];
