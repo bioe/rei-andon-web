@@ -25,7 +25,7 @@ class StatusRecordController extends Controller
             'segment_code' => null
         ]);
 
-        $list = StatusRecord::query()->with('responses')->when(!empty($filters['keyword']), function ($q) use ($filters) {
+        $list = StatusRecord::query()->with('responses')->with('status')->when(!empty($filters['keyword']), function ($q) use ($filters) {
             $q->orWhere('machine_code', 'like', '%' . $filters['keyword'] . '%');
             $q->orWhere('employee_code', 'like', '%' . $filters['keyword'] . '%');
             $q->orWhere('segment_code', 'like', '%' . $filters['keyword'] . '%');

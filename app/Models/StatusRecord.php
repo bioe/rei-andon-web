@@ -144,6 +144,7 @@ class StatusRecord extends BaseModel
             ['field' => 'segment_code', 'title' => 'Zone', 'sortable' => true],
             ['field' => 'employee_code', 'title' => 'Request By', 'sortable' => true],
             ['field' => 'created_at', 'title' => 'Created At', 'sortable' => true],
+            ['field' => '', 'title' => 'Status', 'sortable' => false],
             ['field' => '', 'title' => 'Response', 'sortable' => false],
             ['field' => '', 'title' => 'Attend', 'sortable' => false],
             ['field' => '', 'title' => 'Resolve', 'sortable' => false],
