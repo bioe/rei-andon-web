@@ -36,8 +36,13 @@ class StatusRecordController extends Controller
             $data->last_responsed_at = "";
             $data->last_responsed_employee = "";
             if ($data->responses->count() > 0) {
-                $data->last_responsed_at = $data->responses[0]->created_at;
-                $data->last_responsed_employee = $data->responses[0]->employee_code;
+                foreach ($data->responses as $r) {
+                    if ($r->attending == 1) {
+                        $data->last_responsed_at = $r->created_at;
+                        $data->last_responsed_employee = $r->employee_code;
+                        break;
+                    }
+                }
             }
         });
 
