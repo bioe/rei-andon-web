@@ -83,6 +83,11 @@ class StatusRecord extends BaseModel
         return $this->hasOne(ResponseRecord::class)->where('attending', true)->orderBy('created_at', 'desc');
     }
 
+    public function segment(): HasOne
+    {
+        return $this->hasOne(Segment::class, 'code', 'segment_code');
+    }
+
     public function response_success(): HasMany
     {
         return $this->hasMany(ResponseRecord::class)->orderBy('created_at', 'desc');
