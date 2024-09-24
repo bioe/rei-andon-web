@@ -6,6 +6,7 @@ use App\Http\Requests\Api\PostLoginRequest;
 use App\Http\Requests\Api\PostLogoutRequest;
 use App\Http\Requests\Api\PostResponseRequest;
 use App\Models\ResponseRecord;
+use App\Models\Segment;
 use App\Models\StatusRecord;
 use App\Models\User;
 use App\Models\Watch;
@@ -128,12 +129,21 @@ class WatchController extends ApiController
         }
 
         //Only selected needed field, IOT watch can't support too many string
-        $record = StatusRecord::select('id', 'machine_code', 'segment_code', 'status_id')->with(['status'])->ofUserGroup($group_query)
+        $record = StatusRecord::select('id', 'machine_code', 'segment_code', 'status_id')
+            ->with('segment')
+            ->with(['status'])->ofUserGroup($group_query)
             ->ofIsNew()
             ->ofSelfNoResponse($employee_code)
             ->where('created_at', ">=", Carbon::now()->subMinute(LATEST_RECORD_VIEW_MINUTE)) //Only show message that is within 15min, if no longer no longer appear
             ->orderBy('created_at', 'desc')->first();
 
+        if ($record) {
+            $record->segment_name = $record->segment_code;
+            if ($record->segment != null) {
+                $record->segment_name = $record->segment->name;
+                unset($record->segment); //Reduce showing too much data in watch
+            }
+        }
         return response()->json($record);
     }
 
