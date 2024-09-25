@@ -25,7 +25,7 @@ class StatusRecordController extends Controller
             'segment_code' => null
         ]);
 
-        $list = StatusRecord::query()->with('responses')->with('status')->when(!empty($filters['keyword']), function ($q) use ($filters) {
+        $list = StatusRecord::query()->with('attended')->with('status')->when(!empty($filters['keyword']), function ($q) use ($filters) {
             $q->orWhere('machine_code', 'like', '%' . $filters['keyword'] . '%');
             $q->orWhere('employee_code', 'like', '%' . $filters['keyword'] . '%');
             $q->orWhere('segment_code', 'like', '%' . $filters['keyword'] . '%');
@@ -33,17 +33,7 @@ class StatusRecordController extends Controller
             $q->where('segment_code', $filters['segment_code']);
         })->filterSort($filters)->orderBy('created_at', 'desc')->paginate(config('table.report_limit'));
         $list->each(function ($data) {
-            $data->last_responsed_at = "";
-            $data->last_responsed_employee = "";
-            if ($data->responses->count() > 0) {
-                foreach ($data->responses as $r) {
-                    if ($r->attending == 1) {
-                        $data->last_responsed_at = $r->created_at;
-                        $data->last_responsed_employee = $r->employee_code;
-                        break;
-                    }
-                }
-            }
+            //Manipulate data here
         });
 
         //Filter options

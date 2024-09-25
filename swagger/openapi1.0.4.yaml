@@ -123,6 +123,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+  /watch/complete:
+    post:
+      tags:
+        - Watch
+      summary: Update for operator who completed the job
+      operationId: postComplete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Complete'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Update fail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
   /watch/poll/latest_record/{employee_code}:
     get:
       tags:
@@ -404,6 +429,13 @@ components:
           type: string
           example: "I will attend now"
           description: Text from Button_1 or Button_2
+    Complete:
+      type: object
+      properties:
+        status_record_id:
+          type: integer
+          example: 1
+          description: Call for help record id 
     StatusRecord:
       type: object
       properties:

@@ -95,7 +95,7 @@ const destroy = (id, name) => {
                 </thead>
                 <tbody>
                     <tr v-for="(item, index) in list.data">
-                        <td v-if="$page.props.auth.isEditable" width="10%">
+                        <td v-if="$page.props.auth.isEditable" width="5%">
                             <button @click="destroy(item.id, item.id)" class="btn btn-sm btn-link">
                                 <i class="bi bi-trash"></i>
                             </button>
@@ -108,13 +108,15 @@ const destroy = (id, name) => {
                             {{ item.status.code }}<br/>
                             {{ item.status.name }}
                         </td>
-                        <td>{{ formatDate(item.last_responsed_at) }} 
-                            <template v-if="item.last_responsed_employee">
-                            <br /> By: {{ item.last_responsed_employee }}
+                        <td>
+                            <template v-if="item.attended">
+                            {{ formatDate(item.attended.created_at) }} 
+                            <br /> By: {{ item.attended.employee_name }}
                             </template>
                         </td>
                         <td>{{ formatDate(item.attended_at) }}</td>
                         <td>{{ formatDate(item.resolved_at) }}</td>
+                        <td>{{ formatDate(item.completed_at) }}</td>
                     </tr>
                 </tbody>
             </table>
