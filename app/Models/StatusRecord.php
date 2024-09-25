@@ -30,6 +30,8 @@ class StatusRecord extends BaseModel
         'attend_duration_second', //When operator is infront of the machine and press "LOCAL"
         'resolved_at',
         'resolve_duration_second', //When machine turn back to GREEN
+        'completed_at', //When operator send job complete
+        'complete_duration_second',
         'active',
         'origin',
         'group_id' //Only employee with same group allow to view this record
@@ -86,11 +88,6 @@ class StatusRecord extends BaseModel
     public function segment(): HasOne
     {
         return $this->hasOne(Segment::class, 'code', 'segment_code');
-    }
-
-    public function response_success(): HasMany
-    {
-        return $this->hasMany(ResponseRecord::class)->orderBy('created_at', 'desc');
     }
 
     public function scopeOfMachine($query, array $data)
@@ -153,6 +150,8 @@ class StatusRecord extends BaseModel
             ['field' => '', 'title' => 'Response', 'sortable' => false],
             ['field' => '', 'title' => 'Attend', 'sortable' => false],
             ['field' => '', 'title' => 'Resolve', 'sortable' => false],
+            ['field' => '', 'title' => 'Complete', 'sortable' => false],
+
         ];
 
         return $headers;

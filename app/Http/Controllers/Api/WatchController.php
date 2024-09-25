@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Api\PostCompleteRequest;
 use App\Http\Requests\Api\PostLoginRequest;
 use App\Http\Requests\Api\PostLogoutRequest;
 use App\Http\Requests\Api\PostResponseRequest;
@@ -111,6 +112,27 @@ class WatchController extends ApiController
         return response()->json(['message' => 'Success']);
     }
 
+    /**
+     * When operator update job complete
+     */
+    public function postComplete(PostCompleteRequest $request)
+    {
+        //Look for the person that accept the job
+        $sr = StatusRecord::with('attended')->whereNull('completed_at')->find($request->status_record_id);
+        if ($sr) {
+            if ($sr->attended == null)
+                return response()->json(['message' => 'No one accepted the job.']);
+
+            $now = Carbon::now();
+            $sr->completed_at = $now;
+            $sr->complete_duration_second = $now->diffInSeconds($sr->created_at);
+            $sr->save();
+        } else {
+            return response()->json(['message' => 'Job has been completed.']);
+        }
+        return response()->json(['message' => 'Success']);
+    }
+
 
     //Polling method, if not using MQTT
 
@@ -168,37 +190,6 @@ class WatchController extends ApiController
 
     public function getTime()
     {
-        //Dummy data for the watch copy from https://api.openweathermap.org/data/2.5/weather?id=1733047&appid=a3a7aa927cd7d078588de12cb9d220f3
-        // $data['coord'] = ['lon' => 100.2585, 'lat' => 5.3768];
-        // $data['weather'] = [
-        //     ['id' => 801, 'main' => "Clouds", 'description' => 'few clouds', 'icon' => '02d']
-        // ];
-        // $data['base'] = 'stations';
-        // $data['main'] = [
-        //     'temp' => 301.25,
-        //     'feels_like' => 301.25,
-        //     'temp_min' => 301.25,
-        //     'temp_max' => 301.25,
-        //     'pressure' => 1000,
-        //     'humidity' => 70,
-        //     'sea_level' => 1008,
-        //     'grnd_level' => 958
-        // ];
-        // $data['visibility'] = 10000;
-        // $data['wind'] = ['speed' => 2.06, 'deg' => 0];
-        // $data['cloud'] = ['all' => 100];
-        // $data['id'] = 1;
-        // $data['name'] = "Penang";
-        // $data['code'] = 200;
-        // //Dynamic Data
-
-        // $data['sys'] = [
-        //     "type" => 1,
-        //     "id" => 9438,
-        //     "country" => "MY",
-        //     "sunrise" => Carbon::now()->getTimestamp(),
-        //     "sunset" => Carbon::now()->getTimestamp()
-        // ];
         $timezoneOffset = Carbon::now()->format("P");
         list($hours, $minutes) = sscanf($timezoneOffset, '%d:%d');
         $offsetInSeconds = ($hours * 3600) + ($minutes * 60);
