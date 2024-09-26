@@ -91,12 +91,7 @@ function loadOptions({ action, searchQuery, callback }) {
         <h1 class="h3 mb-3 fw-normal">Andon Watch Login</h1>
         <Alert :message="successMsg" :status="'success'" />
         <Alert :message="errorMsg" :status="'danger'" />
-        {{ $page.props.flash.message }}
-        <FlashAlert v-if="$page.props.flash.message">
-            {{ $page.props.flash.message }}
-        </FlashAlert>
-
-
+    
         <form @submit.prevent="submit">
             <div class="text-start" :class="{ 'is-invalid': form.errors.watch_code }">
                 <InputLabel for="watch" value="Watch Code" />
