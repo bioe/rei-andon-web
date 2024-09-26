@@ -118,9 +118,9 @@ class WatchController extends ApiController
     public function postComplete(PostCompleteRequest $request)
     {
         //Look for the person that accept the job
-        $sr = StatusRecord::with('attended')->whereNull('completed_at')->find($request->status_record_id);
+        $sr = StatusRecord::with('attending')->whereNull('completed_at')->find($request->status_record_id);
         if ($sr) {
-            if ($sr->attended == null)
+            if ($sr->attending == null)
                 return response()->json(['message' => 'No one accepted the job.']);
 
             $now = Carbon::now();
@@ -144,6 +144,16 @@ class WatchController extends ApiController
         //Check user and determine which record to show
         $user = User::with('groups')->where('username', $employee_code)->first();
         if ($user == null) return response()->json(null);
+
+        //Check is the user currently handling other job?
+        $onGoingJob = StatusRecord::with('attending')
+            ->whereHas('attending', function ($q) use ($employee_code) {
+                $q->where('employee_code', $employee_code);
+            })->whereNull('completed_at')
+            ->where('created_at', ">=", Carbon::now()->subMinute(JOB_COMPLETE_AFTER_MINUTE))
+            ->orderBy('created_at', 'desc')->first();
+
+        if ($onGoingJob) return response()->json(null); //Do not notify the user
 
         $group_query = [];
         foreach ($user->groups as $group) {
