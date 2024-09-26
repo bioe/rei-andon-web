@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm , router} from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
@@ -11,6 +11,7 @@ import axios from 'axios';
 import Treeselect from "@zanmato/vue3-treeselect";
 // import the styles
 import "@zanmato/vue3-treeselect/dist/vue3-treeselect.min.css";
+import FlashAlert from '@/Components/FlashAlert.vue';
 
 const props = defineProps({
     timeout_sec: {
@@ -18,10 +19,13 @@ const props = defineProps({
     },
     watch_login_log_id: {
         type: Number
+    },
+    login_message:{
+        type: String
     }
 });
 const isLoading = ref(false)
-const successMsg = ref('')
+const successMsg = ref(props.login_message)
 const errorMsg = ref('')
 
 const form = useForm({
@@ -56,7 +60,9 @@ function checkIsLogin(id) {
         if (response.data.success) {
             reset();
             form.reset();
-            successMsg.value = response.data.message;
+            // successMsg.value = response.data.message;
+            //form.reset() become not reactive after use in timer, this is alternate method to fix it.
+            router.visit(route('watch_login.main'));
         }
     }).catch(function () {
     });;
@@ -66,12 +72,12 @@ function reset() {
     clearInterval(interval);
     clearTimeout(timeout);
     isLoading.value = false;
+    
 }
 
 function loadOptions({ action, searchQuery, callback }) {
       if (action === "ASYNC_SEARCH" ) {
         axios.get(route('watch_login.available',{'keyword':searchQuery})).then(function (response){
-            console.log(response.data);
             callback(null, response.data);
         });
       }
@@ -85,15 +91,20 @@ function loadOptions({ action, searchQuery, callback }) {
         <h1 class="h3 mb-3 fw-normal">Andon Watch Login</h1>
         <Alert :message="successMsg" :status="'success'" />
         <Alert :message="errorMsg" :status="'danger'" />
+        {{ $page.props.flash.message }}
+        <FlashAlert v-if="$page.props.flash.message">
+            {{ $page.props.flash.message }}
+        </FlashAlert>
 
 
         <form @submit.prevent="submit">
-            <div class="text-start">
+            <div class="text-start" :class="{ 'is-invalid': form.errors.watch_code }">
                 <InputLabel for="watch" value="Watch Code" />
                 <treeselect v-model="form.watch_code" 
                         :async="true" :load-options="loadOptions"
                         placeholder="Enter Watch Code" />
             </div>
+            <InputError class="my-1" :message="form.errors.watch_code" />
             <!-- <div class="form-floating" :class="{ 'is-invalid': form.errors.watch_code }">
                 <input type="text" class="form-control" id="floatingCode" placeholder="Code"
                     :class="{ 'is-invalid': form.errors.watch_code }" v-model="form.watch_code" required

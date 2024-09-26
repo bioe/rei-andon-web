@@ -38,9 +38,16 @@ class WatchLoginRequest extends FormRequest
      */
     public function authenticate(): void
     {
-        $watch = Watch::where('code', $this->watch_code)->where('active', true)->first();
-        $user = User::where('username', $this->username)->where('user_type', OPERATOR)->where('active', true)->first();
+        $watch = Watch::with('login_user')->where('code', $this->watch_code)->where('active', true)->first();
+        $user = User::where('username', $this->username)->where('active', true)->first();
 
+        //Check watch login to any user
+        $watch_by_user_msg = null;
+        if ($watch->login_user != null) {
+            $watch_by_user_msg = $watch->login_user->name . " is login to " . $watch->code;
+        }
+
+        //Check user login to any watch
         $user_login_watch = null;
         if ($user) {
             $user_login_watch = Watch::where('login_user_id', $user->id)->where('active', true)->first();
@@ -49,9 +56,9 @@ class WatchLoginRequest extends FormRequest
         $this->watch = $watch;
         $this->user = $user;
 
-        if (!$watch || !$user || $user_login_watch) {
+        if (!$watch || !$user || $user_login_watch || $watch_by_user_msg) {
             throw ValidationException::withMessages([
-                'watch_code' => $watch == null ? "Watch Code not found." : null,
+                'watch_code' => $watch == null ? "Watch Code not found." : ($watch_by_user_msg != null ?  $watch_by_user_msg : null),
                 'username' => $user == null ? "Employee Code not found." : ($user_login_watch ? "This employee login to " . $user_login_watch->code : null),
             ]);
         }

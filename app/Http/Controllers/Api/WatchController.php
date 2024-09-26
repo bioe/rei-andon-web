@@ -35,7 +35,7 @@ class WatchController extends ApiController
             return response()->json(['message' => 'Login Cancelled']);
         }
 
-        $user = User::where('username', $data['employee_code'])->where('user_type', OPERATOR)->first(['id', 'username', 'shift']);
+        $user = User::where('username', $data['employee_code'])->first(['id', 'username', 'shift']);
         if ($user == null) return response()->json(['message' => 'Employee not found'], 400);
 
         if ($log) {

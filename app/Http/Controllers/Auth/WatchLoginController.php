@@ -19,9 +19,14 @@ class WatchLoginController extends Controller
      */
     public function index(Request $request)
     {
+        $msg = session('interval_login_message', '');
+        //Clear
+        session(['interval_login_message' => '']);
+
         return Inertia::render('Auth/WatchLogin', [
             'timeout_sec' => config('setting.watch_login_timeout', 1) * 1000,
             'watch_login_log_id' => $request->session()->get('watch_login_log_id'), //Login success get from flash session
+            'login_message' => $msg //Display message from getIsLogin()
         ]);
     }
 
@@ -52,10 +57,17 @@ class WatchLoginController extends Controller
     public function getIsLogin(WatchLoginLog $watch_login_log)
     {
         if ($watch_login_log->success == true) {
-            return response()->json(['success' => true, 'message' => 'Successfully login to ' . $watch_login_log->watch->code]);
+            $msg = 'Successfully login to ' . $watch_login_log->watch->code;
+            session(['interval_login_message' => $msg]);
+
+            return response()->json(['success' => true]);
         } else if ($watch_login_log->cancel == true) {
-            return response()->json(['success' => true, 'message' => 'Login cancel by ' . $watch_login_log->watch->code]);
+            $msg = 'Login cancel for ' . $watch_login_log->watch->code;
+
+            session(['interval_login_message' => $msg]);
+            return response()->json(['success' => true]);
         }
+
         return response()->json(['success' => false]);
     }
 
@@ -66,7 +78,8 @@ class WatchLoginController extends Controller
 
     private function availableWatchOptions($keyword = null)
     {
-        $watch = Watch::whereNull('login_user_id')
+        $watch = Watch::query()
+            ->whereNull('login_user_id')
             ->when($keyword != null && !empty($keyword), function ($q) use ($keyword) {
                 $q->where('code', 'like', '%' . $keyword . '%');
             })->get();
