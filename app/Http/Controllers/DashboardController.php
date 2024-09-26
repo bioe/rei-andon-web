@@ -35,7 +35,7 @@ class DashboardController extends Controller
         $time = Carbon::now()->subMinute(LATEST_RECORD_VIEW_MINUTE);
 
         $machines = Machine::with('machine_type')
-            ->with('last_status_record.status')->with('last_status_record.attended', function ($query) use ($time) {
+            ->with('last_status_record.status')->with('last_status_record.attending', function ($query) use ($time) {
                 $query->where('created_at', '>=', $time);
             })
             ->where('active', true)->get();
@@ -52,12 +52,12 @@ class DashboardController extends Controller
                 $m->current_status_code = null;
                 //Show Person
                 $m->current_employee = null;
-                if ($m->last_status_record->attended == null) {
+                if ($m->last_status_record->attending == null) {
                     $m->bg_colour = "bg-danger";
                     $m->current_status_code = $m->last_status_record->status->code;
-                } else if ($m->last_status_record->attended != null) {
+                } else if ($m->last_status_record->attending != null) {
                     $m->bg_colour = "bg-warning";
-                    $m->current_employee = $m->last_status_record->attended->employee_name . ' - ' . $m->last_status_record->attended->response_option;
+                    $m->current_employee = $m->last_status_record->attending->employee_name . ' - ' . $m->last_status_record->attending->response_option;
                 }
             }
             $group_machines[$m->machine_type->code][] = $m;

@@ -80,7 +80,7 @@ class StatusRecord extends BaseModel
         return $this->hasMany(ResponseRecord::class)->orderBy('created_at', 'desc');
     }
 
-    public function attended(): HasOne
+    public function attending(): HasOne
     {
         return $this->hasOne(ResponseRecord::class)->where('attending', true)->orderBy('created_at', 'desc');
     }

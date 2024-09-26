@@ -109,9 +109,9 @@ const destroy = (id, name) => {
                             {{ item.status.name }}
                         </td>
                         <td>
-                            <template v-if="item.attended">
-                            {{ formatDate(item.attended.created_at) }} 
-                            <br /> By: {{ item.attended.employee_name }}
+                            <template v-if="item.attending">
+                            {{ formatDate(item.attending.created_at) }} 
+                            <br /> By: {{ item.attending.employee_name }}
                             </template>
                         </td>
                         <td>{{ formatDate(item.attended_at) }}</td>

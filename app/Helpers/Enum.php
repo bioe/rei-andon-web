@@ -17,6 +17,7 @@ const NIGHT = 'NIGHT';
 //TODO:Move to Setting 
 const LATEST_RECORD_VIEW_MINUTE = 15;
 const DASHBOARD_REFRESH_SECOND = 5;
+const JOB_COMPLETE_AFTER_MINUTE = 30; //User will receive new record after the existing record is over x minute and did not update completed_at 
 
 //MQTT
 const TOPIC_NOTIFICATION = "andon/notification";
