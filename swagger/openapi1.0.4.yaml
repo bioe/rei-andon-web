@@ -19,8 +19,10 @@ tags:
     description: Polling Method, if not using MQTT
   - name: Rei
     description: API Call use in REI
-  - name: MQTT
-    description: MQTT Topic and Schema
+  - name: MQTT REI
+    description: MQTT Topic and Schema use in REI Controller
+  - name: MQTT WATCH
+    description: MQTT Topic and Schema use in Watch
 paths:
   /watch/login:
     post:
@@ -334,22 +336,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-  /andon/notification:
-    get:
-      tags:
-        - MQTT
-      summary: Operator selected a status, message to send to the watch
-      responses:
-        '200':
-          description: mqtt json output
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MQTTNotification'
   /andon/response:
     get:
       tags:
-        - MQTT
+        - MQTT REI
       summary: Watch user select a button and reply
       responses:
         '200':
@@ -358,10 +348,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MQTTResponse'
-  /andon/heartbeat:
+  /andon/complete:
     get:
       tags:
-        - MQTT
+        - MQTT REI
+      summary: Watch user job complete and update in REI
+      responses:
+        '200':
+          description: mqtt json output
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MQTTComplete'
+  /watch/heartbeat:
+    get:
+      tags:
+        - MQTT WATCH
       summary: Update the watch heartbeat
       responses:
         '200':
@@ -370,10 +372,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MQTTHeartbeat'
-  /andon/login/{watch_code}:
+  /watch/notification:
     get:
       tags:
-        - MQTT
+        - MQTT WATCH
+      summary: Operator selected a status, message to send to the watch
+      responses:
+        '200':
+          description: mqtt json output
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MQTTNotification'
+  /watch/login/{watch_code}:
+    get:
+      tags:
+        - MQTT WATCH
       summary: Watch to trigger /watch/login API
       parameters:
         - name: watch_code
@@ -712,3 +726,20 @@ components:
           type: number
           description: Close Login window in Watch after time end
           example: 20
+    MQTTComplete:
+      type: object
+      properties:
+        status_record_id:
+          type: integer
+          example: 1
+          description: Call for help record id 
+        segment_code:
+          type: string
+          example: "Zone F"
+        machine_code:
+          type: string
+          example: "SAW-03"
+        message:
+          type: string
+          example: "W-SAW-01 completed by John"
+          description: Text to appear in REI
