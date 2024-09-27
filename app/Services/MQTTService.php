@@ -41,7 +41,7 @@ class MQTTService
         $sr = StatusRecord::with('attending')->find($status_record_id);
         $content["status_record_id"] = $sr->id;
         $content["machine_code"] =  $sr->machine_code;
-        $content["segment_code"] =  $sr->machine_code;
+        $content["segment_code"] =  $sr->segment_code;
         $content["message"] = $sr->machine_code . " completed by " . $sr->employee_name;
 
         try {
