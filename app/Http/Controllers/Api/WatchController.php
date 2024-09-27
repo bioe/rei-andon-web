@@ -127,6 +127,8 @@ class WatchController extends ApiController
             $sr->completed_at = $now;
             $sr->complete_duration_second = $now->diffInSeconds($sr->created_at);
             $sr->save();
+
+            MQTTService::sendComplete($sr->id);
         } else {
             return response()->json(['message' => 'Job has been completed.']);
         }

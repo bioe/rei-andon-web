@@ -22,6 +22,7 @@ const JOB_COMPLETE_AFTER_MINUTE = 30; //User will receive new record after the e
 //MQTT
 const TOPIC_NOTIFICATION = "andon/notification";
 const TOPIC_RESPONSE = "andon/response";
+const TOPIC_COMPLETE = "andon/complete";
 const TOPIC_HEARTBEAT = "andon/heartbeat";
 const TOPIC_LOGIN = "andon/login"; //andon/login/{watch_code}
 
