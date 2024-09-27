@@ -42,7 +42,7 @@ class MQTTService
         $content["status_record_id"] = $sr->id;
         $content["machine_code"] =  $sr->machine_code;
         $content["segment_code"] =  $sr->segment_code;
-        $content["message"] = $sr->machine_code . " completed by " . $sr->employee_name;
+        $content["message"] = "Completed by " . $sr->employee_name;
 
         try {
             MQTT::publish(TOPIC_COMPLETE, json_encode($content));
