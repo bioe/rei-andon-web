@@ -688,6 +688,10 @@ components:
           type: string
           example: "0000"
           description: Employee Code after login
+        employee_name:
+          type: string
+          example: "John"
+          description: Employee Name
         error_code:
           type: string
           example: "E001"
