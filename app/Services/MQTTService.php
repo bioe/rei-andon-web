@@ -20,6 +20,7 @@ class MQTTService
         $r = ResponseRecord::with('status_record.status')->find($response_record_id);
         $content["status_record_id"] = $r->status_record_id;
         $content["employee_code"] = $r->employee_code;
+        $content["employee_name"] = $r->employee_name;
         $content["error_code"] = $r->status_record->status->code ?? '';
         $content["error_name"] = $r->status_record->status->name ?? '';
         $content["response_option"] = $r->response_option;
@@ -42,7 +43,7 @@ class MQTTService
         $content["status_record_id"] = $sr->id;
         $content["machine_code"] =  $sr->machine_code;
         $content["segment_code"] =  $sr->segment_code;
-        $content["message"] = "Completed by " . $sr->employee_name;
+        $content["message"] = "Completed by " . $sr->attending->employee_name;
 
         try {
             MQTT::publish(TOPIC_COMPLETE, json_encode($content));
