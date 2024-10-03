@@ -95,7 +95,14 @@ class WatchController extends ApiController
         $record = StatusRecord::with(['status', 'responses'])->findOrFail($data['status_record_id']);
 
         foreach ($record->responses as $response) {
-            if ($response->attending) return response()->json(['message' => $response->employee_code . ' is attending.']);
+            if ($response->attending) {
+                if ($response->employee_code == $data['employee_code']) {
+                    //Watch sometime will post twice, if same employee will return success, so the watch able to record and go complete job page.
+                    return response()->json(['message' => 'Success']);
+                } else {
+                    return response()->json(['message' => $response->employee_code . ' is attending.']);
+                }
+            }
         }
 
         //Try to get Employee name
