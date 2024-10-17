@@ -6,6 +6,8 @@ const LOGIN_USERNAME = 'LOGIN_USERNAME';
 const REI = "REI";
 const WATCH = "WATCH";
 const WEB = "WEB";
+const HELP = "HELP";
+
 
 const ADMIN = 'ADMIN';
 const ENGINEER = 'ENGINEER';
@@ -22,6 +24,8 @@ const JOB_COMPLETE_AFTER_MINUTE = 30; //User will receive new record after the e
 //MQTT USE IN REI
 const TOPIC_RESPONSE = "andon/response";
 const TOPIC_COMPLETE = "andon/complete";
+const TOPIC_HELP = "andon/help";
+
 //MQTT USE IN WATCH
 const TOPIC_HEARTBEAT = "watch/heartbeat";
 const TOPIC_NOTIFICATION = "watch/notification";

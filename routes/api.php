@@ -32,6 +32,8 @@ Route::prefix('watch')->name('api.watch.')->group(function () {
     Route::get('record/{id}', [WatchController::class, 'getRecord'])->name('record');
     Route::post('response', [WatchController::class, 'postResponse'])->name('response');
     Route::post('complete', [WatchController::class, 'postComplete'])->name('complete');
+    Route::post('help', [WatchController::class, 'postHelp'])->name('help');
+
 
 
     //Polling
