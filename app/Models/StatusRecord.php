@@ -32,9 +32,10 @@ class StatusRecord extends BaseModel
         'resolve_duration_second', //When machine turn back to GREEN
         'completed_at', //When operator send job complete
         'complete_duration_second',
+        'ask_help_at',
         'active',
         'origin',
-        'group_id' //Only employee with same group allow to view this record
+        'status_record_help_id' //To refer back the original status record when sending a help
     ];
 
     //Default attributes

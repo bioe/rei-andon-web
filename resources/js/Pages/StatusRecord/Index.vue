@@ -5,7 +5,7 @@ import Paginate from '@/Components/Table/Paginate.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, router, useForm, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import { formatDate } from '@/helper';
+import { formatDate, formatTimeOnly } from '@/helper';
 
 const props = defineProps({
     header: {
@@ -102,7 +102,11 @@ const destroy = (id, name) => {
                         </td>
                         <td>{{ item.machine_code }}</td>
                         <td>{{ item.segment_code }}</td>
-                        <td>{{ item.employee_code }}</td>
+                        <td>
+                            <template v-if="item.employee_name != null" >  {{ item.employee_name }}
+                            </template>
+                            <template v-else >  {{ item.employee_code }}  </template>
+                        </td>
                         <td>{{ formatDate(item.created_at) }}</td>
                         <td>
                             {{ item.status.code }}<br/>
@@ -112,6 +116,10 @@ const destroy = (id, name) => {
                             <template v-if="item.attending">
                             {{ formatDate(item.attending.created_at) }} 
                             <br /> By: {{ item.attending.employee_name }}
+                            </template>
+
+                            <template v-if="item.ask_help_at">
+                            <br/><br/> Help: {{ formatTimeOnly(item.ask_help_at) }} 
                             </template>
                         </td>
                         <td>{{ formatDate(item.attended_at) }}</td>

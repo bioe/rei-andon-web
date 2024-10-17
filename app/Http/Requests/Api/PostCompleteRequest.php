@@ -17,6 +17,7 @@ class PostCompleteRequest extends FormRequest
         $rules = [];
         return  array_merge($rules, [
             'status_record_id' => ['numeric', 'required'],
+            'employee_code' => ['string', 'required'],
         ]);
     }
 }

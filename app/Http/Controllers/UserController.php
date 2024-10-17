@@ -117,7 +117,7 @@ class UserController extends Controller
     public function patchMenu(Request $request, $id)
     {
         $data = User::find($id);
-        $data->menu_permission = $request->menus;
+        $data->menus = $request->menus;
         $data->save();
         return Redirect::route('users.edit', $data->id)->with('message', 'Menu Permission Updated');
     }

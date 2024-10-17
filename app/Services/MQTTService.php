@@ -53,6 +53,30 @@ class MQTTService
         }
     }
 
+    public static function sendHelp($status_record_id)
+    {
+        $sr = StatusRecord::find($status_record_id);
+        if (!$sr) return;
+        $askHelp = StatusRecord::with('attending')->find($sr->status_record_help_id);
+        if (!$askHelp) return;
+
+        $content["status_record_id"] = $sr->id;
+        $content['old_status_record_id'] = $sr->status_record_help_id;
+        $content["machine_code"] =  $sr->machine_code;
+        $content["segment_code"] =  $sr->segment_code;
+
+        $employee_name = "";
+        if ($askHelp->attending != null) $employee_name = $askHelp->attending->employee_name;
+        $content["message"] = $employee_name . " is asking for help! Notifying other operators.";
+
+        try {
+            MQTT::publish(TOPIC_HELP, json_encode($content));
+            MQTT::disconnect();
+        } catch (Exception $e) {
+            Log::error('sendComplete() ' . $e);
+        }
+    }
+
     /*
     * USE IN WATCH
     * Send to watch and watch will trigger POST: /watch/login

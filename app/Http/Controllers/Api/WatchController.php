@@ -142,6 +142,42 @@ class WatchController extends ApiController
         return response()->json(['message' => 'Success']);
     }
 
+    /**
+     * When operator can't finish the job and request for help, notify other operators.
+     */
+    public function postHelp(PostCompleteRequest $request)
+    {
+        //Look for the person that accept the job
+        $sr = StatusRecord::whereNull('completed_at')->find($request->status_record_id);
+        $user = User::where('username', $request->employee_code)->first();
+        if ($sr) {
+            if ($sr->ask_help_at != null) return response()->json(['message' => 'Help has been requested.']);
+
+            $sr->ask_help_at = Carbon::now();
+            $sr->save();
+
+            //Create another copy
+            $copy['origin'] = HELP;
+            $copy['segment_code'] = $sr->segment_code;
+            $copy['machine_code'] = $sr->machine_code;
+            $copy['machine_type'] = $sr->machine_type;
+            $copy['employee_code'] = $sr->employee_code;
+            $copy['status_id'] = $sr->status_id;
+            $copy['status_record_help_id'] = $sr->id;
+            if ($user) {
+                $copy['employee_id'] = $user->id;
+                $copy['employee_code'] = $user->username;
+                $copy['employee_name'] = $user->name;
+            }
+            $new_sr = StatusRecord::create($copy);
+
+            MQTTService::sendHelp($new_sr->id);
+        } else {
+            return response()->json(['message' => 'Job has been completed.']);
+        }
+        return response()->json(['message' => 'Help Request sent.']);
+    }
+
 
     //Polling method, if not using MQTT
 
