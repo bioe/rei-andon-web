@@ -6,6 +6,7 @@ use App\Models\Group;
 use App\Http\Requests\UpdateGroupRequest;
 use App\Models\MachineType;
 use App\Models\Segment;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -27,6 +28,24 @@ class GroupController extends Controller
             $q->orWhere('name', 'like', '%' . $filters['keyword'] . '%');
             $q->orWhere('description', 'like', '%' . $filters['keyword'] . '%');
         })->filterSort($filters)->paginate(config('table.page_limit'));
+
+        //Not using Attribute is to prevent each row query Status Model, here only query once and combine the data
+        $all_status = Status::all()->keyBy('id');
+        $list->each(function ($data) use ($all_status) {
+            $data->status_label = "";
+            if ($data->status_list != null) {
+                for ($i = 0; $i < count($data->status_list); $i++) {
+                    $status_id = $data->status_list[$i];
+                    if (isset($all_status[$status_id])) {
+                        $data->status_label .= $all_status[$status_id]->code;
+                        //Add comma if not last
+                        if (($i + 1) !=  count($data->status_list)) {
+                            $data->status_label .= ", ";
+                        }
+                    }
+                }
+            }
+        });
 
         return Inertia::render('Group/Index', [
             'header' => Group::header(),
@@ -72,9 +91,12 @@ class GroupController extends Controller
         $mt = MachineType::all();
         $type_of_machines = treeselect_options($mt, 'code', 'name');
         $segments = Segment::all();
+        $status = Status::all();
+        $type_of_statuses = treeselect_options($status, 'id', 'name');
         return Inertia::render('Group/Edit', [
             'data' => $data,
             'type_of_machines' => $type_of_machines,
+            'type_of_statuses' => $type_of_statuses,
             'segments' => $segments
         ]);
     }

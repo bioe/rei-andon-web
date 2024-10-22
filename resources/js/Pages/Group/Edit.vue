@@ -23,6 +23,9 @@ const props = defineProps({
     },
     segments: {
         type: Object
+    },
+    type_of_statuses: {
+        type: Array
     }
 });
 
@@ -33,6 +36,7 @@ const form = useForm({
     name: props.data.name ?? '',
     description: props.data.description ?? '',
     machine_list: props.data.machine_list ?? [],
+    status_list: props.data.status_list ?? [],
     active: props.data.active,
     segment_code: props.data.segment_code ?? null
 });
@@ -74,6 +78,16 @@ const form = useForm({
                                     <InputError :message="form.errors.description" />
                                 </div>
                                 <div class="col-md-6">
+                                    <InputLabel for="machines" value="Machines Types" />
+                                    <treeselect v-model="form.machine_list" :multiple="true"
+                                        :options="props.type_of_machines" placeholder="Select your machine(s)..." />
+                                </div>
+                                <div class="col-md-6">
+                                    <InputLabel for="status" value="Status Types" />
+                                    <treeselect v-model="form.status_list" :multiple="true"
+                                        :options="props.type_of_statuses" placeholder="Select your status(s)..." />
+                                </div>
+                                <div class="col-md-6">
                                     <InputLabel for="segment_code" value="Segment / Zone" />
                                     <select v-model="form.segment_code" id="segment_code" class="form-select"
                                         :class="{ 'is-invalid': form.errors.segment_code }" required>
@@ -81,11 +95,6 @@ const form = useForm({
                                         <option v-for="s in  segments" :value="s.code">{{ s.code }}</option>
                                     </select>
                                     <InputError :message="form.errors.segment_code" />
-                                </div>
-                                <div class="col-md-6">
-                                    <InputLabel for="machines" value="Machines Types" />
-                                    <treeselect v-model="form.machine_list" :multiple="true"
-                                        :options="props.type_of_machines" placeholder="Select your machine(s)..." />
                                 </div>
                                 <div class="col-12">
                                     <Checkbox id="checkActive" v-model:checked="form.active">

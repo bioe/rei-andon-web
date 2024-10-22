@@ -19,6 +19,7 @@ class UpdateGroupRequest extends FormRequest
             'active' => ['boolean'],
             'segment_code' => ['string'],
             'machine_list' => ['array'],
+            'status_list' => ['array'],
         ];
     }
 }

@@ -15,11 +15,13 @@ class Group extends BaseModel
         'active',
         'segment_code',
         'machine_list',
+        'status_list',
         'last_edit_user_id'
     ];
 
     protected $casts = [
         'machine_list' => 'array',
+        'status_list' => 'array',
     ];
 
     protected $attributes = [
@@ -27,13 +29,13 @@ class Group extends BaseModel
     ];
 
     protected $appends = [
-        'machines_label'
+        'machines_label',
     ];
 
     protected function active(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => $value ? true : false
+            get: fn(string $value) => $value ? true : false
         );
     }
 
@@ -54,7 +56,7 @@ class Group extends BaseModel
     protected function segmentCode(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => strtoupper($value)
+            set: fn(string $value) => strtoupper($value)
         );
     }
 
@@ -68,6 +70,7 @@ class Group extends BaseModel
             ['field' => 'description', 'title' => 'Description', 'sortable' => true],
             ['field' => 'segment_code', 'title' => 'Segment / Zone', 'sortable' => false],
             ['field' => 'machine_list', 'title' => 'Machines', 'sortable' => false],
+            ['field' => 'status_list', 'title' => 'Statuses', 'sortable' => false],
         ];
 
         return array_merge($headers, [
