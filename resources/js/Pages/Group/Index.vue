@@ -95,11 +95,11 @@ const destroy = (id, name) => {
                             <Link :href="route(routeGroupName + '.edit', item.id)" class="btn btn-sm btn-link">
                             <i class="bi bi-pencil"></i>
                             </Link>
-                            <button @click="destroy(item.id, item.name)" class="btn btn-sm btn-link">
+                            <button @click="destroy(item.id, item.code)" class="btn btn-sm btn-link">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </td>
-                        <td>{{ item.name }}</td>
+                        <td>{{ item.code }}</td>
                         <td>{{ item.description }}</td>
                         <td>{{ item.segment_code }}</td>
                         <td>{{ item.machines_label }}</td>

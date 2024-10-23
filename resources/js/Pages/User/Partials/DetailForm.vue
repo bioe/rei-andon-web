@@ -33,6 +33,7 @@ const form = useForm({
     user_type: props.data.user_type,
     shift: props.data.shift,
     password: '',
+    badge_no: props.data.badge_no ?? '',
 });
 </script>
 
@@ -72,6 +73,12 @@ const form = useForm({
                     <option v-for="v in user_type_options" :value="v">{{ v }}</option>
                 </select>
                 <InputError :message="form.errors.user_type" />
+            </div>
+
+            <div class="col-md-6">
+                <InputLabel for="badge_no" value="Badge No" />
+                <TextInput id="badge_no" type="text" v-model="form.badge_no" :invalid="form.errors.badge_no" required />
+                <InputError :message="form.errors.badge_no" />
             </div>
 
             <!-- <div class="col-md-6">

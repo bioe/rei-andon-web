@@ -23,9 +23,9 @@ class UserUpdateRequest extends FormRequest
             $rules['username'] = ['alpha_dash', 'max:255', Rule::unique(User::class)->ignore($this->user)];
         }
         if ($this->isMethod('POST')) {
-            $rules['password'] = ['required', Password::defaults()];
+            $rules['password'] = ['required', Password::min(6)];
         } else {
-            $rules['password'] = ['nullable', Password::defaults()];
+            $rules['password'] = ['nullable', Password::min(6)];
         }
         return  array_merge($rules, [
             'name' => ['string', 'max:255'],
@@ -33,6 +33,7 @@ class UserUpdateRequest extends FormRequest
             'active' => ['boolean'],
             'user_type' => ['string'],
             'shift' => ['nullable', 'string'],
+            'badge_no' => ['nullable', 'string', Rule::unique(User::class)->ignore($this->user)],
         ]);
     }
 }

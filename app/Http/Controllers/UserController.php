@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UsersExport;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\Group;
 use App\Models\User;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -68,7 +70,7 @@ class UserController extends Controller
         }
 
         $menu_list = config('menus.items');
-        $group_options = treeselect_options(Group::where('active', true)->get());
+        $group_options = treeselect_options(Group::where('active', true)->get(), 'id', 'code');
 
 
         return Inertia::render('User/Edit', [
@@ -133,4 +135,11 @@ class UserController extends Controller
         $data->groups()->attach($request->groups);
         return Redirect::route('users.edit', $data->id)->with('message', 'Group Updated');
     }
+
+    public function getExport()
+    {
+        return Excel::download(new UsersExport, 'andon_users.xlsx');
+    }
+
+    public function getImport() {}
 }

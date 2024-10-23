@@ -33,7 +33,7 @@ const routeGroupName = 'groups';
 const headerTitle = ref('Group');
 
 const form = useForm({
-    name: props.data.name ?? '',
+    code: props.data.code ?? '',
     description: props.data.description ?? '',
     machine_list: props.data.machine_list ?? [],
     status_list: props.data.status_list ?? [],
@@ -66,10 +66,10 @@ const form = useForm({
                         <div class="tab-pane fade pt-10 show active" id="tab_1" role="tabpanel" aria-labelledby="tab_1">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <InputLabel for="name" value="Name" />
-                                    <TextInput id="name" type="text" v-model="form.name" :invalid="form.errors.name"
+                                    <InputLabel for="code" value="Code" />
+                                    <TextInput id="code" type="text" v-model="form.code" :invalid="form.errors.code"
                                         required />
-                                    <InputError :message="form.errors.name" />
+                                    <InputError :message="form.errors.code" />
                                 </div>
                                 <div class="col-md-6">
                                     <InputLabel for="description" value="Description" />

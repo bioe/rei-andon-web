@@ -28,7 +28,8 @@ class User extends Authenticatable //implements MustVerifyEmail
         'password',
         'active',
         'user_type',
-        'shift'
+        'shift',
+        'badge_no'
     ];
 
     /**

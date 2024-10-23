@@ -82,6 +82,12 @@ const destroy = (id, name) => {
                 <i class="bi bi-plus"></i>
                 Create
                 </Link>
+
+                <a v-if="$page.props.auth.isEditable" class="btn btn-outline-primary btn-sm" target="_blank"
+                    :href="route(routeGroupName + '.export')">
+                <i class="bi bi-filetype-xls"></i>
+                Export
+                </a>
             </div>
 
             <table class="table table-bordered table-striped table-hover">

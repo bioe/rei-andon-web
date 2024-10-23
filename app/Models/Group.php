@@ -10,7 +10,7 @@ class Group extends BaseModel
     use SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'code',
         'description',
         'active',
         'segment_code',
@@ -66,7 +66,7 @@ class Group extends BaseModel
     public static function header()
     {
         $headers = [
-            ['field' => 'name', 'title' => 'Name', 'sortable' => true],
+            ['field' => 'code', 'title' => 'Code', 'sortable' => true], //Rename to Code, because need unique and use for import&export
             ['field' => 'description', 'title' => 'Description', 'sortable' => true],
             ['field' => 'segment_code', 'title' => 'Segment / Zone', 'sortable' => false],
             ['field' => 'machine_list', 'title' => 'Machines', 'sortable' => false],
