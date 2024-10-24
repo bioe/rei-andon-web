@@ -15,7 +15,7 @@ class UserListSheet implements WithMapping, WithHeadings, FromQuery, WithTitle, 
     public function headings(): array
     {
         return [
-            'Employee Code / Username',
+            'Employee Code',
             'Name',
             'Badge No',
             'User Role',

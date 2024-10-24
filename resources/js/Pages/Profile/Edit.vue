@@ -35,8 +35,8 @@ defineProps({
             <UpdatePasswordForm />
         </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <!-- <div class="my-3 p-3 bg-body rounded shadow-sm">
             <DeleteUserForm />
-        </div>
+        </div> -->
     </AuthenticatedLayout>
 </template>

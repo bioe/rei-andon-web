@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, watch } from 'vue';
+import { computed, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
     id: {
@@ -50,7 +50,7 @@ const closeOnEscape = (e) => {
 //Parent can access close() function
 defineExpose({ close });
 //Callback event to parent
-defineEmits(['yesEvent']);
+defineEmits(['yesEvent','noEvent']);
 </script>
 
 <template>
@@ -60,13 +60,13 @@ defineEmits(['yesEvent']);
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="vueModalLabel">{{ title }}</h1>
-                        <button type="button" class="btn-close" @click="close" aria-label="Close"></button>
+                        <button type="button" class="btn-close" @click="$emit('noEvent')" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <slot />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ buttonNo }}</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="$emit('noEvent')">{{ buttonNo }}</button>
                         <button type="button" class="btn" :class="buttonClass" @click="$emit('yesEvent')" :disabled="form.processing">{{ buttonYes }}</button>
                     </div>
                 </div>

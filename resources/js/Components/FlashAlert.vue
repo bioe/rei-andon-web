@@ -14,6 +14,6 @@ const alertClass = computed(() => 'alert-' + props.status)
 <template>
     <div class="alert alert-dismissible fade show" :class="alertClass" role="alert">
         <slot></slot>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
     </div>
 </template>

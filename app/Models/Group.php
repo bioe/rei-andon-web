@@ -60,6 +60,13 @@ class Group extends BaseModel
         );
     }
 
+    protected function code(): Attribute
+    {
+        return Attribute::make(
+            set: fn(string $value) => strtoupper($value)
+        );
+    }
+
     /*
     * Build Table Header
     */
