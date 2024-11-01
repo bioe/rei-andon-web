@@ -11,7 +11,16 @@ return [
     'items' => [
         [
             'title' => 'Dashboard',
-            'route' => 'dashboard'
+            'submenus' => [
+                [
+                    'title' => 'Machines',
+                    'route' => 'dashboard'
+                ],
+                [
+                    'title' => 'Watch',
+                    'route' => 'watch_dashboard'
+                ],
+            ]
         ],
         [
             'title' => 'Masterfile',

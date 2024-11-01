@@ -539,6 +539,10 @@ components:
           type: integer
           example: 1
           description: Call for help record id 
+        employee_code:
+          type: string
+          example: "000001"
+          description: The login user
     Help:
       type: object
       properties:

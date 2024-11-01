@@ -107,7 +107,10 @@ class WatchController extends ApiController
 
         //Try to get Employee name
         $user = User::where("username", $data['employee_code'])->first();
-        if ($user) $data['employee_name'] = $user->name;
+        if ($user) {
+            $data['employee_id'] = $user->id;
+            $data['employee_name'] = $user->name;
+        }
 
         //Append ResponseRecord Data
         $data['attending'] = ($record->status->button_1 == $data['response_option']) ? true : false;
