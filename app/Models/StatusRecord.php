@@ -115,8 +115,12 @@ class StatusRecord extends BaseModel
             foreach ($groups as $group) {
                 $query->orWhere(function ($query) use ($group) {
                     $query->where('segment_code', $group['segment_code']);
-                    if (count($group['machine_types']) > 0) {
+                    if ($group['machine_types'] != null && count($group['machine_types']) > 0) {
                         $query->whereIn('machine_type', $group['machine_types']);
+                    }
+
+                    if ($group['status_ids'] != null && count($group['status_ids']) > 0) {
+                        $query->whereIn('status_id', $group['status_ids']);
                     }
                 });
             }

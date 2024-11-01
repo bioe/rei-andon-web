@@ -202,7 +202,7 @@ class WatchController extends ApiController
 
         $group_query = [];
         foreach ($user->groups as $group) {
-            $group_query[] = ['segment_code' => $group->segment_code, 'machine_types' => $group->machine_list];
+            $group_query[] = ['segment_code' => $group->segment_code, 'machine_types' => $group->machine_list, 'status_ids' => $group->status_list];
         }
 
         //Only selected needed field, IOT watch can't support too many string

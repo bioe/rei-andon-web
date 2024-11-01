@@ -23,6 +23,9 @@ const props = defineProps({
     },
     segments: {
         type: Object
+    },
+    type_of_statuses: {
+        type: Array
     }
 });
 
@@ -30,9 +33,10 @@ const routeGroupName = 'groups';
 const headerTitle = ref('Group');
 
 const form = useForm({
-    name: props.data.name ?? '',
+    code: props.data.code ?? '',
     description: props.data.description ?? '',
     machine_list: props.data.machine_list ?? [],
+    status_list: props.data.status_list ?? [],
     active: props.data.active,
     segment_code: props.data.segment_code ?? null
 });
@@ -62,16 +66,26 @@ const form = useForm({
                         <div class="tab-pane fade pt-10 show active" id="tab_1" role="tabpanel" aria-labelledby="tab_1">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <InputLabel for="name" value="Name" />
-                                    <TextInput id="name" type="text" v-model="form.name" :invalid="form.errors.name"
+                                    <InputLabel for="code" value="Code" />
+                                    <TextInput id="code" type="text" v-model="form.code" :invalid="form.errors.code"
                                         required />
-                                    <InputError :message="form.errors.name" />
+                                    <InputError :message="form.errors.code" />
                                 </div>
                                 <div class="col-md-6">
                                     <InputLabel for="description" value="Description" />
                                     <TextAreaInput class="form-control" id="description" type="text"
                                         v-model="form.description" :invalid="form.errors.description" />
                                     <InputError :message="form.errors.description" />
+                                </div>
+                                <div class="col-md-6">
+                                    <InputLabel for="machines" value="Machines Types" />
+                                    <treeselect v-model="form.machine_list" :multiple="true"
+                                        :options="props.type_of_machines" placeholder="Select your machine(s)..." />
+                                </div>
+                                <div class="col-md-6">
+                                    <InputLabel for="status" value="Status Types" />
+                                    <treeselect v-model="form.status_list" :multiple="true"
+                                        :options="props.type_of_statuses" placeholder="Select your status(s)..." />
                                 </div>
                                 <div class="col-md-6">
                                     <InputLabel for="segment_code" value="Segment / Zone" />
@@ -81,11 +95,6 @@ const form = useForm({
                                         <option v-for="s in  segments" :value="s.code">{{ s.code }}</option>
                                     </select>
                                     <InputError :message="form.errors.segment_code" />
-                                </div>
-                                <div class="col-md-6">
-                                    <InputLabel for="machines" value="Machines Types" />
-                                    <treeselect v-model="form.machine_list" :multiple="true"
-                                        :options="props.type_of_machines" placeholder="Select your machine(s)..." />
                                 </div>
                                 <div class="col-12">
                                     <Checkbox id="checkActive" v-model:checked="form.active">

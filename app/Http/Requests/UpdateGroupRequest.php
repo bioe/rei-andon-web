@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Group;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateGroupRequest extends FormRequest
 {
@@ -13,12 +15,14 @@ class UpdateGroupRequest extends FormRequest
      */
     public function rules(): array
     {
+        //$this->group = id, laravel automatically assign
         return  [
-            'name' => ['string', 'max:255'],
+            'code' => ['string', 'max:255', Rule::unique(Group::class)->ignore($this->group)], //Need to be unique, want to use for import
             'description' => ['nullable', 'string', 'max:255'],
             'active' => ['boolean'],
             'segment_code' => ['string'],
             'machine_list' => ['array'],
+            'status_list' => ['array'],
         ];
     }
 }

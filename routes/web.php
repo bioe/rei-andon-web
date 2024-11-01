@@ -47,6 +47,8 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::prefix('users')->name('users.')->group(function () {
         Route::patch('menu/{id}', [UserController::class, 'patchMenu'])->name('menu.update');
         Route::patch('group/{id}', [UserController::class, 'patchGroup'])->name('group.update');
+        Route::get('export', [UserController::class, 'getExport'])->name('export');
+        Route::post('import', [UserController::class, 'postImport'])->name('import');
     });
     Route::resource('users', UserController::class);
     Route::resource('statuses', StatusController::class);

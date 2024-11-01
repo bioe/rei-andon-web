@@ -6,6 +6,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, router, useForm, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { formatDate } from '@/helper';
+import ImportModal from './ImportModal.vue';
 
 const props = defineProps({
     header: {
@@ -82,6 +83,17 @@ const destroy = (id, name) => {
                 <i class="bi bi-plus"></i>
                 Create
                 </Link>
+
+                <a v-if="$page.props.auth.isEditable" class="btn btn-outline-primary btn-sm" target="_blank"
+                    :href="route(routeGroupName + '.export')">
+                <i class="bi bi-filetype-xls"></i>
+                Export
+                </a>
+
+                <button v-if="$page.props.auth.isEditable" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#importModal">
+                <i class="bi bi-filetype-xls"></i>
+                Import
+                </button>
             </div>
 
             <table class="table table-bordered table-striped table-hover">
@@ -114,6 +126,6 @@ const destroy = (id, name) => {
             <Paginate :data="list" />
         </div>
 
-
+    <ImportModal></ImportModal>
     </AuthenticatedLayout>
 </template>
