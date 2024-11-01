@@ -138,6 +138,8 @@ function loadOptions({ action, searchQuery, callback }) {
 
             <div class="mt-4">
                 <Link :href="route('login')"> Admin Login
+                </Link> <br/>
+                <Link :href="route('watch_dashboard')"> Watch Dashboard
                 </Link>
             </div>
         </form>

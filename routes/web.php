@@ -11,6 +11,7 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\StatusRecordController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WatchController;
+use App\Http\Controllers\WatchDashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,6 +36,10 @@ Route::get('/', function () {
     //     'phpVersion' => PHP_VERSION,
     // ]);
 });
+
+Route::get('/watch_dashboard', [WatchDashboardController::class, 'index'])->name('watch_dashboard');
+Route::get('/watch_dashboard/refresh', [WatchDashboardController::class, 'refresh'])->name('watch_dashboard.refresh');
+
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard/refresh', [DashboardController::class, 'refresh'])->middleware(['auth', 'verified'])->name('dashboard.refresh');

@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\AuthModal as Authenticatable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable //implements MustVerifyEmail
 {
@@ -137,6 +138,15 @@ class User extends Authenticatable //implements MustVerifyEmail
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class, 'group_user', 'user_id', 'group_id');
+    }
+
+    public function active_response_record(): HasOne
+    {
+        return $this->hasOne(ResponseRecord::class, 'employee_id', 'id')
+            ->with('status_record.status')
+            ->whereHas('status_record', function ($q) {
+                $q->whereNull('completed_at');
+            })->orderBy('created_at', 'desc');
     }
 
     //Static Functions Below Here
