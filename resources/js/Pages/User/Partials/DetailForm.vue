@@ -77,7 +77,7 @@ const form = useForm({
 
             <div class="col-md-6">
                 <InputLabel for="badge_no" value="Badge No" />
-                <TextInput id="badge_no" type="text" v-model="form.badge_no" :invalid="form.errors.badge_no" required />
+                <TextInput id="badge_no" type="text" v-model="form.badge_no" :invalid="form.errors.badge_no" />
                 <InputError :message="form.errors.badge_no" />
             </div>
 
