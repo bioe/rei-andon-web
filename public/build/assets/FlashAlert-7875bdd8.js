@@ -1,1 +1,0 @@
-import{k as r,o as l,h as o,s as n,n as c,u}from"./app-316d0402.js";const m={__name:"FlashAlert",props:{status:{type:String,default:"success"}},setup(s){const e=s,t=r(()=>"alert-"+e.status);return(a,p)=>(l(),o("div",{class:c(["alert alert-dismissible fade show",u(t)]),role:"alert"},[n(a.$slots,"default")],2))}};export{m as _};
