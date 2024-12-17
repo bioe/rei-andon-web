@@ -220,7 +220,7 @@ class User extends Authenticatable //implements MustVerifyEmail
 
     public static function user_type_options()
     {
-        return [ADMIN, ENGINEER, OPERATOR];
+        return [ADMIN, ENGINEER, TECHNICIAN, OPERATOR];
     }
 
     public static function shift_options()
