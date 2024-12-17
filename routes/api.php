@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CabinetController;
 use App\Http\Controllers\Api\ReiController;
 use App\Http\Controllers\Api\WatchController;
 use Illuminate\Http\Request;
@@ -44,4 +45,11 @@ Route::prefix('watch')->name('api.watch.')->group(function () {
 
     Route::get('time', [WatchController::class, 'getTime'])->name('time');
     Route::get('test', [WatchController::class, 'getTest'])->name('test');
+});
+
+
+//Smart Charging Cabinet
+Route::prefix('cabinet')->name('api.cabinet.')->group(function () {
+    Route::get('staff', [CabinetController::class, 'getStaff'])->name('staffs');
+    Route::post('operation', [CabinetController::class, 'postOperation'])->name('operation');
 });
