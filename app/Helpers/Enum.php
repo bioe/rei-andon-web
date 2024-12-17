@@ -11,6 +11,7 @@ const HELP = "HELP";
 
 const ADMIN = 'ADMIN';
 const ENGINEER = 'ENGINEER';
+const TECHNICIAN = 'TECHNICIAN';
 const OPERATOR = 'OPERATOR';
 
 const MORNING = 'MORNING';
