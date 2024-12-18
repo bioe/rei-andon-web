@@ -144,6 +144,7 @@ class User extends Authenticatable //implements MustVerifyEmail
     {
         return $this->hasOne(ResponseRecord::class, 'employee_id', 'id')
             ->with('status_record.status')
+            ->where('attending', true)
             ->whereHas('status_record', function ($q) {
                 $q->whereNull('completed_at');
             })->orderBy('created_at', 'desc');
