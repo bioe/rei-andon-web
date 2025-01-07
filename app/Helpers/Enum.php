@@ -35,3 +35,4 @@ const TOPIC_LOGIN = "watch/login"; //watch/login/{watch_code}
 //WATCH LOGIN MODE
 const WATCH_LOGIN_WEB = "WEB"; //Require to Accept Login in the watch
 const WATCH_LOGIN_BADGE = "BADGE"; //Skip Accept Login in the watch
+const WATCH_LOGIN_MODE = WATCH_LOGIN_BADGE;

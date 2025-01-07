@@ -239,7 +239,7 @@ class WatchController extends ApiController
         if ($log)
             return response()->json([
                 'employee_code' => $log->user->username,
-                'login_mode' => WATCH_LOGIN_WEB,
+                'login_mode' => WATCH_LOGIN_MODE,
                 'timeout_second' => (config('setting.watch_login_timeout') - 2) //Login Window Appear for how many seconds
             ]);
 
