@@ -46,11 +46,11 @@ class WatchLoginController extends Controller
         $log = WatchLoginLog::create([
             'watch_id' => $watch->id,
             'user_id' => $user->id,
-            'mode' => WATCH_LOGIN_WEB
+            'mode' => WATCH_LOGIN_MODE
         ]);
 
         //Send MQTT
-        MQTTService::sendLogin($log, WATCH_LOGIN_WEB);
+        MQTTService::sendLogin($log, WATCH_LOGIN_MODE);
         return Redirect::route('watch_login.main')->with('watch_login_log_id', $log->id);
     }
 
