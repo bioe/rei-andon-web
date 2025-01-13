@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //No add unique, make life easier when import
-            $table->string('badge_no')->after('shift')->nullable();
+            //badge_no = accard_id
+            $table->integer('badge_no')->after('shift')->nullable();
         });
     }
 

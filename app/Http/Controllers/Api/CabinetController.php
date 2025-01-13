@@ -39,10 +39,10 @@ class CabinetController extends ApiController
             foreach ($users as $user) {
                 $staff = [
                     'staff_name' => $user->name,
-                    'department' => $user->user_type,
-                    'cost_centre' => 'DAVINCI',
+                    'department' => 'DAVINCI',
+                    'cost_centre' => 'MS1022', //TODO: create a master file, temporary only one cost centre
                     'staff_id' => $user->username,
-                    'accard_id' => $user->badge_no,
+                    'accard_id' => intval($user->badge_no),
                 ];
 
                 //If true, this operator can use setup function
