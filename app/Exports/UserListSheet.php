@@ -19,7 +19,8 @@ class UserListSheet implements WithMapping, WithHeadings, FromQuery, WithTitle, 
             'Name',
             'Badge No',
             'User Role',
-            'Groups'
+            'Groups',
+            'Watch Code'
         ];
     }
 
@@ -42,7 +43,8 @@ class UserListSheet implements WithMapping, WithHeadings, FromQuery, WithTitle, 
             $user->name,
             $user->badge_no,
             $user->user_type,
-            implode(', ', $groups)
+            implode(', ', $groups),
+            $user->watch->code ?? ''
         ];
     }
 

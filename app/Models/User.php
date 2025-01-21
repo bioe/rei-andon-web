@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\AuthModal as Authenticatable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable //implements MustVerifyEmail
@@ -30,7 +31,8 @@ class User extends Authenticatable //implements MustVerifyEmail
         'active',
         'user_type',
         'shift',
-        'badge_no'
+        'badge_no',
+        'watch_id'
     ];
 
     /**
@@ -138,6 +140,12 @@ class User extends Authenticatable //implements MustVerifyEmail
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class, 'group_user', 'user_id', 'group_id');
+    }
+
+
+    public function watch(): BelongsTo
+    {
+        return $this->belongsTo(Watch::class);
     }
 
     public function active_response_record(): HasOne
