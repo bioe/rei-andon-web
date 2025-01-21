@@ -22,6 +22,9 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 class FirstUsersSheet implements OnEachRow, WithStartRow, WithUpserts, WithUpsertColumns, WithValidation, WithHeadingRow, PersistRelations
 {
     public $groups;
+    public $row = 1;
+    public $seenValues = [];
+
     public function __construct()
     {
         //Prevent query in each row
@@ -88,13 +91,14 @@ class FirstUsersSheet implements OnEachRow, WithStartRow, WithUpserts, WithUpser
 
     public function rules(): array
     {
+        $this->row++;
         return [
             'employee_code' => ['required'],
             'name' => ['required'],
             'badge_no' => ['nullable'],
             'user_role' => ['required', Rule::in(User::user_type_options())],
             'groups' => ['nullable', new ImportGroupExists],
-            'watch_code' => ['nullable', new ImportWatchExists],
+            'watch_code' => ['nullable', new ImportWatchExists, new ImportUnique($this->row)],
         ];
     }
 }

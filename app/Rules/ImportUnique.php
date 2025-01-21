@@ -7,34 +7,27 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class ImportUnique implements ValidationRule
 {
-    protected $seenValues = [];
-    protected $columnName;
+    private static $seenWatchCodes = [];
+    private $row;
 
-    public function __construct($columnName)
+    public function __construct(int $row)
     {
-        $this->columnName = $columnName;
-        $this->seenValues = [];
+        $this->row = $row;
     }
 
-    /**
-     * Run the validation rule.
-     *
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
-     */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        // Skip if watch_code is empty/null
         if (empty($value)) {
             return;
         }
 
-        $normalizedValue = strtoupper(trim($value));
+        $watchCode = trim($value);
 
-        if (in_array($normalizedValue, $this->seenValues)) {
-            $fail("The {$this->columnName} '{$value}' appears multiple times in your import file.");
-            return;
+        if (isset(self::$seenWatchCodes[$watchCode])) {
+            $fail("Duplicate Watch Code '{$watchCode}' found. Please remove it.");
+        } else {
+            self::$seenWatchCodes[$watchCode] = $this->row;
         }
-
-        $this->seenValues[] = $normalizedValue;
-        \Log::info($this->seenValues);
     }
 }
