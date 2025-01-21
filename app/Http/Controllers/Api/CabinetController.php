@@ -124,7 +124,7 @@ class CabinetController extends ApiController
         $log = WatchLoginLog::create([
             'watch_id' => $watch->id,
             'user_id' => $user->id,
-            'mode' => WATCH_LOGIN_MODE
+            'mode' => WATCH_LOGIN_BADGE
         ]);
     }
 }
