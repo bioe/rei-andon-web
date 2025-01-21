@@ -4,7 +4,10 @@ namespace App\Imports;
 
 use App\Models\Group;
 use App\Models\User;
+use App\Models\Watch;
 use App\Rules\ImportGroupExists;
+use App\Rules\ImportUnique;
+use App\Rules\ImportWatchExists;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Row;
@@ -32,7 +35,9 @@ class FirstUsersSheet implements OnEachRow, WithStartRow, WithUpserts, WithUpser
     public function onRow(Row $orignal_row)
     {
         //$rowIndex = $orignal_row->getIndex();
-        $row      = $orignal_row->toArray();
+        $row = $orignal_row->toArray();
+
+        $watch = Watch::where('code', $row['watch_code'])->select(['id'])->first();
 
         $user = User::updateOrCreate(
             ['username' => $row['employee_code']], // use this to check exists or not
@@ -42,6 +47,7 @@ class FirstUsersSheet implements OnEachRow, WithStartRow, WithUpserts, WithUpser
                 'badge_no' => $row['badge_no'] ?? null,
                 'user_type' => $row['user_role'],
                 'password' => Hash::make($row['employee_code']), //IF is INSERT create password same as username, else only upsertColumns specified column
+                'watch_id' => $watch->id ?? null
             ]
         );
 
@@ -77,7 +83,7 @@ class FirstUsersSheet implements OnEachRow, WithStartRow, WithUpserts, WithUpser
      */
     public function upsertColumns()
     {
-        return ['username', 'name', 'badge_no', 'user_type'];
+        return ['username', 'name', 'badge_no', 'user_type', 'watch_id'];
     }
 
     public function rules(): array
@@ -88,6 +94,7 @@ class FirstUsersSheet implements OnEachRow, WithStartRow, WithUpserts, WithUpser
             'badge_no' => ['nullable'],
             'user_role' => ['required', Rule::in(User::user_type_options())],
             'groups' => ['nullable', new ImportGroupExists],
+            'watch_code' => ['nullable', new ImportWatchExists],
         ];
     }
 }

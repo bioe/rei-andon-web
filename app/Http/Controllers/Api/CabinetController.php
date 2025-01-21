@@ -69,17 +69,34 @@ class CabinetController extends ApiController
         $data = $request->validated();
         $this->storeLog($request);
 
-        $user = User::where('username', $data['staffId'])->first();
+        $user = User::with('watch')->where('username', $data['staffId'])->first();
+
+        if (!$user) {
+            $output = ["code" => "40000", "message" => "User not found"];
+            return response()->json($output);
+        }
+
         Cabinet::updateOrCreate(
             ['box_id' => $data['boxId']], // Search criteria
             [
                 'box_id' =>  $data['boxId'],
                 'box_no' => $data['boxNo'],
-                'status' => $data['operation'],
+                'status' => $data['operation'], //"deposit" or "takeout"
                 'last_occur_at' => $data['occurAt'],
                 'last_operate_user_id' => $user->id,
             ] // Update or create with these values
         );
+
+        //Mean login
+        if ($data['operation'] == "takeout") {
+
+            if (!$user->watch) {
+                $output = ["code" => "40000", "message" => "Watch not found"];
+                return response()->json($output);
+            }
+
+            $this->watch_login($user);
+        }
 
         $output = ["code" => "20000", "message" => "ok"];
         return response()->json($output);
@@ -94,5 +111,20 @@ class CabinetController extends ApiController
                 'payload' => json_encode($request->all()),
             ]
         );
+    }
+
+    private function watch_login(User $user)
+    {
+        $watch = $user->watch;
+        //Delete no login log
+        $log = WatchLoginLog::ofPending()->where('watch_id', $watch->id)->orderBy('created_at', 'desc')->first();
+        if ($log) $log->delete();
+
+        //Create new 
+        $log = WatchLoginLog::create([
+            'watch_id' => $watch->id,
+            'user_id' => $user->id,
+            'mode' => WATCH_LOGIN_MODE
+        ]);
     }
 }

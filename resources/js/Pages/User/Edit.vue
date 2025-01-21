@@ -27,6 +27,9 @@ const props = defineProps({
     shift_options: {
         type: Array,
     },
+    watch_options: {
+        type: Array,
+    }
 });
 const routeGroupName = 'users';
 const headerTitle = ref('User');

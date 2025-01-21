@@ -33,7 +33,8 @@ class UserUpdateRequest extends FormRequest
             'active' => ['boolean'],
             'user_type' => ['string'],
             'shift' => ['nullable', 'string'],
-            'badge_no' => ['nullable', 'string', Rule::unique(User::class)->ignore($this->user)],
+            'badge_no' => ['nullable', 'numeric', Rule::unique(User::class)->ignore($this->user)],
+            'watch_id' => ['nullable', 'numeric', Rule::unique(User::class)->ignore($this->user)],
         ]);
     }
 }

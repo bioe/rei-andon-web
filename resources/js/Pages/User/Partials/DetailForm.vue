@@ -5,7 +5,9 @@ import TextInput from '@/Components/TextInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import { useForm, Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import Treeselect from "@zanmato/vue3-treeselect";
+// import the styles
+import "@zanmato/vue3-treeselect/dist/vue3-treeselect.min.css";
 
 const props = defineProps({
     data: {
@@ -21,6 +23,9 @@ const props = defineProps({
     shift_options: {
         type: Array,
     },
+    watch_options: {
+        type: Array
+    }
 });
 
 const routeGroupName = 'users';
@@ -34,6 +39,7 @@ const form = useForm({
     shift: props.data.shift,
     password: '',
     badge_no: props.data.badge_no ?? '',
+    watch_id: props.data.watch_id ?? null
 });
 </script>
 
@@ -57,7 +63,8 @@ const form = useForm({
 
             <div class="col-md-6">
                 <InputLabel for="password" value="Password" />
-                <TextInput id="password" type="password" v-model="form.password" :invalid="form.errors.password" placeholder="Leave blank if no change" />
+                <TextInput id="password" type="password" v-model="form.password" :invalid="form.errors.password"
+                    placeholder="Leave blank if no change" />
                 <InputError :message="form.errors.password" />
             </div>
 
@@ -79,6 +86,13 @@ const form = useForm({
                 <InputLabel for="badge_no" value="Badge No" />
                 <TextInput id="badge_no" type="text" v-model="form.badge_no" :invalid="form.errors.badge_no" />
                 <InputError :message="form.errors.badge_no" />
+            </div>
+
+            <div class="col-md-6">
+                <InputLabel for="watch" value="Assigned Watch" />
+                <treeselect v-model="form.watch_id" :options="props.watch_options" placeholder="Enter Watch Code"
+                    :class="{ 'is-invalid': form.errors.watch_id }" />
+                <InputError class="my-1" :message="form.errors.watch_id" />
             </div>
 
             <!-- <div class="col-md-6">

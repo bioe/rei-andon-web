@@ -8,6 +8,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Imports\UsersImport;
 use App\Models\Group;
 use App\Models\User;
+use App\Models\Watch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
@@ -74,7 +75,7 @@ class UserController extends Controller
 
         $menu_list = config('menus.items');
         $group_options = treeselect_options(Group::where('active', true)->get(), 'id', 'code');
-
+        $watch_options = treeselect_options(Watch::where('active', true)->get(), 'id', 'code');
 
         return Inertia::render('User/Edit', [
             'data' => $data,
@@ -83,6 +84,7 @@ class UserController extends Controller
             'group_options' => $group_options,
             'shift_options' => User::shift_options(),
             'user_type_options' => User::user_type_options(),
+            'watch_options' => $watch_options
         ]);
     }
 
