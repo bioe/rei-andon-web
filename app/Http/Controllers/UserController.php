@@ -100,6 +100,10 @@ class UserController extends Controller
             unset($data['password']);
         }
 
+        if (!isset($data['watch_id'])) {
+            $data['watch_id'] = null;
+        }
+
         if (null == $id) {
             $data = User::create($data);
             return Redirect::route('users.edit', $data->id)->with('message', 'User created successfully');

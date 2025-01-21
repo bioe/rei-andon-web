@@ -46,6 +46,11 @@ class WatchLoginLog extends BaseModel
         return $query->where('success', true)->whereNull('cancel')->whereNotNull('login_at')->whereNull('logout_at');
     }
 
+    public function scopePollLogout($query)
+    {
+        return $query->where('success', true)->whereNull('cancel')->whereNotNull('login_at')->whereNull('logout_at')->where('poll_logout', true);
+    }
+
     //Login success need to update to the watch row as well
     public function updateWatch()
     {

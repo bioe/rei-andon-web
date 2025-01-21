@@ -87,15 +87,16 @@ class CabinetController extends ApiController
             ] // Update or create with these values
         );
 
-        //Mean login
         if ($data['operation'] == "takeout") {
-
+            //Perform login
             if (!$user->watch) {
                 $output = ["code" => "40000", "message" => "Watch not found"];
                 return response()->json($output);
             }
-
             $this->watch_login($user);
+        } else if ($data['operation'] == "deposit") {
+            //Enable poll Logout
+            $this->watch_poll_logout($user);
         }
 
         $output = ["code" => "20000", "message" => "ok"];
@@ -124,7 +125,18 @@ class CabinetController extends ApiController
         $log = WatchLoginLog::create([
             'watch_id' => $watch->id,
             'user_id' => $user->id,
-            'mode' => WATCH_LOGIN_MODE
+            'mode' => WATCH_LOGIN_BADGE
         ]);
+    }
+
+    private function watch_poll_logout(User $user)
+    {
+        $watch = $user->watch;
+        //If can logout 
+        $log = WatchLoginLog::toLogout()->where('watch_id', $watch->id)->orderBy('created_at', 'desc')->first();
+        if ($log) {
+            $log->poll_logout = true; //Set poll_logout to true, in getPollLatestMachineRecord() will show forceLogout
+            $log->save();
+        }
     }
 }

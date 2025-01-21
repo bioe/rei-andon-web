@@ -193,6 +193,13 @@ class WatchController extends ApiController
         $user = User::with('groups')->where('username', $employee_code)->first();
         if ($user == null) return response()->json(null);
 
+        //This is to auto logout from watch, without to show confirmation dialog,
+        //Share with this poll function because we do not want to increase the watch load.
+        $pollLogout = WatchLoginLog::pollLogout()->where('user_id', $user->id)->orderBy('created_at', 'desc')->first();
+        if ($pollLogout) {
+            return response()->json(['force_logout' => true]);
+        }
+
         //Check is the user currently handling other job?
         $onGoingJob = StatusRecord::with('attending')
             ->whereHas('attending', function ($q) use ($employee_code) {
@@ -239,7 +246,7 @@ class WatchController extends ApiController
         if ($log)
             return response()->json([
                 'employee_code' => $log->user->username,
-                'login_mode' => WATCH_LOGIN_MODE,
+                'login_mode' => $log->mode,
                 'timeout_second' => (config('setting.watch_login_timeout') - 2) //Login Window Appear for how many seconds
             ]);
 
