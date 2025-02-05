@@ -9,10 +9,11 @@ class Kernel extends ConsoleKernel
 {
     /**
      * Define the application's command schedule.
+     * In crontab * * * * * cd  /var/www/andon.3b.my && /usr/bin/php8.2 artisan schedule:run >> /dev/null 2>&1 
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('app:create-status')->everyFifteenMinutes();
     }
 
     /**
